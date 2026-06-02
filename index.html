@@ -96,7 +96,7 @@ body{
 .alert-i{background:rgba(88,166,255,.1);color:#58a6ff;border:1px solid rgba(88,166,255,.3);}
 
 /* ── SECTION TITLE ── */
-.stitle{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:10px;}
+.stitle{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:10px;}
 .divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
 
 /* ── WEATHER CARDS ── */
@@ -105,9 +105,9 @@ body{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:14px;
 }
-.wcard-label{font-size:13px;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.wcard-label{font-size:14px;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:500;}
 .wcard-val{font-size:32px;font-weight:700;line-height:1.1;}
-.wcard-sub{font-size:14px;color:var(--text2);margin-top:4px;line-height:1.4;}
+.wcard-sub{font-size:13px;color:var(--text2);margin-top:4px;line-height:1.4;}
 .wcard.wide{grid-column:1/-1;}
 
 /* ── HOURLY CHART ── */
@@ -499,7 +499,7 @@ async function fetchAll(){
     const ss=new Date(daily.sunset[0]).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});
 
     $('weather-grid').innerHTML=
-      wcard(WE[wc]||'☁️','Zjawisko',WMO[wc]||'—',`Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`)+
+      wcard(WE[wc]||'☁️','Zjawisko',WMO[wc]||'—',`Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`,true)+
       wcard('🌡','Temperatura',Math.round(cur.temperature_2m)+'°C',`Odczuwalna ${Math.round(cur.apparent_temperature)}°C`)+
       wcard('💧','Wilgotność',Math.round(cur.relative_humidity_2m)+'%',`Punkt rosy ${dp}°C`)+
       wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
