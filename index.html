@@ -47,32 +47,32 @@ body{
 }
 
 /* ── LAYOUT ── */
-.page{width:100%;padding:12px 12px 2rem;}
+.page{width:100%;padding:14px 14px 2rem;}
 
 /* ── HEADER ── */
 .header{margin-bottom:1rem;}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
-.app-title{font-size:20px;font-weight:700;display:flex;align-items:center;gap:.4rem;}
-.header-actions{display:flex;gap:6px;}
+.app-title{font-size:26px;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+.header-actions{display:flex;gap:8px;}
 .btn{
   display:flex;align-items:center;justify-content:center;
-  min-width:44px;min-height:44px;padding:0 12px;
+  min-width:54px;min-height:54px;padding:0 14px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);
-  font-size:18px;cursor:pointer;
+  font-size:24px;cursor:pointer;
   transition:border-color .15s,background .15s;
 }
 .btn:hover,.btn:active{border-color:var(--accent);background:var(--bg3);}
 .search-row{display:flex;gap:8px;flex-wrap:wrap;}
 .search-input{
-  flex:1;padding:12px 14px;
+  flex:1;padding:14px 16px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);
-  font-size:16px;outline:none;
+  font-size:18px;outline:none;
 }
 .search-input:focus{border-color:var(--accent);}
-.btn-search{padding:0 18px;font-size:15px;font-weight:600;color:var(--accent);border-color:var(--accent);}
-.loc-label{font-size:13px;color:var(--text2);margin-top:.4rem;padding-left:2px;}
+.btn-search{padding:0 20px;font-size:18px;font-weight:700;color:var(--accent);border-color:var(--accent);}
+.loc-label{font-size:14px;color:var(--text2);margin-top:.5rem;padding-left:2px;}
 
 /* ── SAVED CHIPS ── */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.75rem;}
@@ -96,18 +96,18 @@ body{
 .alert-i{background:rgba(88,166,255,.1);color:#58a6ff;border:1px solid rgba(88,166,255,.3);}
 
 /* ── SECTION TITLE ── */
-.stitle{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:10px;}
+.stitle{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:12px;}
 .divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
 
 /* ── WEATHER CARDS ── */
-.weather-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:8px;}
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
 .wcard{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:14px;
 }
-.wcard-label{font-size:14px;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:500;}
-.wcard-val{font-size:32px;font-weight:700;line-height:1.1;}
-.wcard-sub{font-size:13px;color:var(--text2);margin-top:4px;line-height:1.4;}
+.wcard-label{font-size:15px;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:500;}
+.wcard-val{font-size:30px;font-weight:700;line-height:1.1;margin-bottom:4px;}
+.wcard-sub{font-size:14px;color:var(--text2);margin-top:4px;line-height:1.4;}
 .wcard.wide{grid-column:1/-1;}
 
 /* ── HOURLY CHART ── */
@@ -125,11 +125,11 @@ body{
 .fcard-main{display:flex;align-items:center;justify-content:space-between;}
 .fcard-left{display:flex;align-items:center;gap:12px;}
 .fcard-icon{font-size:40px;}
-.fcard-day{font-size:17px;font-weight:700;}
-.fcard-desc{font-size:14px;color:var(--text2);margin-top:2px;}
-.fcard-temps{font-size:28px;font-weight:700;text-align:right;}
-.fcard-min{font-size:16px;color:var(--text2);}
-.fcard-details{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:14px;color:var(--text2);}
+.fcard-day{font-size:18px;font-weight:700;}
+.fcard-desc{font-size:15px;color:var(--text2);margin-top:3px;}
+.fcard-temps{font-size:30px;font-weight:700;text-align:right;}
+.fcard-min{font-size:17px;color:var(--text2);}
+.fcard-details{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:15px;color:var(--text2);}
 
 /* ── AQI ── */
 .aqi-hero{
@@ -146,8 +146,8 @@ body{
 .aqi-desc{font-size:14px;color:var(--text2);}
 .aqi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0;width:100%;}
 .aqi-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;}
-.aqi-card-label{font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
-.aqi-card-val{font-size:28px;font-weight:700;}
+.aqi-card-label{font-size:13px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.aqi-card-val{font-size:30px;font-weight:700;}
 .aqi-card-unit{font-size:12px;color:var(--text2);margin-top:4px;}
 .bar-wrap{height:3px;background:var(--bg3);border-radius:2px;margin-top:8px;overflow:hidden;}
 .bar{height:100%;border-radius:2px;}
@@ -499,7 +499,7 @@ async function fetchAll(){
     const ss=new Date(daily.sunset[0]).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});
 
     $('weather-grid').innerHTML=
-      wcard(WE[wc]||'☁️','Zjawisko',WMO[wc]||'—',`Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`,true)+
+      wcard(WE[wc]||'☁️','Zjawisko',WMO[wc]||'—',`Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`)+
       wcard('🌡','Temperatura',Math.round(cur.temperature_2m)+'°C',`Odczuwalna ${Math.round(cur.apparent_temperature)}°C`)+
       wcard('💧','Wilgotność',Math.round(cur.relative_humidity_2m)+'%',`Punkt rosy ${dp}°C`)+
       wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
