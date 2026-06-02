@@ -113,7 +113,7 @@ body{
 /* ── HOURLY CHART ── */
 .chart-box{
   background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:14px 0 10px 0;margin-bottom:10px;
+  border-radius:var(--radius);padding:17px 0 12px 0;margin-bottom:12px;
 }
 
 /* ── FORECAST ── */
@@ -235,7 +235,7 @@ body{
 <!-- HOURLY CHART -->
 <div class="chart-box" id="hourly-box" style="display:none;">
   <div class="stitle" style="margin-bottom:8px;padding:0 14px;">Prognoza godzinowa — 24h</div>
-  <svg id="hourly-svg" viewBox="0 0 360 180" style="width:100%;max-height:220px;display:block;margin:0;"></svg>
+  <svg id="hourly-svg" viewBox="0 0 700 180" style="width:100%;max-height:220px;display:block;margin:0;"></svg>
 </div>
 
 <!-- FORECAST -->
@@ -424,7 +424,7 @@ function renderHourly(hourly){
   const precs=idxs.map(i=>+(hourly.precipitation[i]||0));
   const probs=idxs.map(i=>Math.round(hourly.precipitation_probability?.[i]||0));
   const labels=idxs.map(i=>new Date(hourly.time[i]).getHours()+':00');
-  const W=360,H=180,pL=30,pR=8,pT=22,pB=26,iW=W-pL-pR,iH=H-pT-pB,n=idxs.length;
+  const W=700,H=180,pL=40,pR=10,pT=22,pB=26,iW=W-pL-pR,iH=H-pT-pB,n=idxs.length;
   const minT=Math.min(...temps)-1,maxT=Math.max(...temps)+1,maxP=Math.max(5,...precs);
   const isDark=!['light'].includes(document.documentElement.getAttribute('data-theme'));
   const gc='rgba(125,133,144,0.15)',tc='var(--text2)';
