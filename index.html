@@ -117,19 +117,16 @@ body{
 }
 
 /* ── FORECAST ── */
-.forecast-list{display:grid;grid-template-columns:repeat(2,1fr)!important;gap:12px;margin-bottom:0;}
-.fcard{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:17px 19px;
-}
-.fcard-main{display:flex;align-items:flex-start;justify-content:space-between;}
-.fcard-left{display:flex;flex-direction:column;align-items:flex-start;gap:4px;}
-.fcard-icon{font-size:32px;}
-.fcard-day{font-size:16px;font-weight:700;}
-.fcard-desc{font-size:13px;color:var(--text2);margin-top:2px;}
-.fcard-temps{font-size:22px;font-weight:700;text-align:right;}
-.fcard-min{font-size:14px;color:var(--text2);}
-.fcard-details{display:flex;flex-direction:column;gap:4px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);}
+.forecast-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
+.fcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;}
+.fcard-main{display:flex;flex-direction:column;gap:8px;}
+.fcard-left{display:flex;align-items:center;gap:8px;}
+.fcard-icon{font-size:28px;flex-shrink:0;}
+.fcard-day{font-size:15px;font-weight:700;}
+.fcard-desc{font-size:12px;color:var(--text2);}
+.fcard-temps{font-size:26px;font-weight:700;}
+.fcard-min{font-size:15px;color:var(--text2);}
+.fcard-details{display:flex;flex-direction:column;gap:3px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);}
 
 /* ── AQI ── */
 .aqi-hero{
@@ -520,17 +517,16 @@ async function fetchAll(){
       const sr2=new Date(daily.sunrise[idx]).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});
       const ss2=new Date(daily.sunset[idx]).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});
       return`<div class="fcard">
-        <div class="fcard-main">
-          <div class="fcard-left">
-            <div class="fcard-icon">${WE[daily.weather_code[idx]]||'☁️'}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:28px;">${WE[daily.weather_code[idx]]||'☁️'}</span>
             <div><div class="fcard-day">${day}</div><div class="fcard-desc">${WMO[daily.weather_code[idx]]||'—'}</div></div>
           </div>
-          <div><div class="fcard-temps">${Math.round(daily.temperature_2m_max[idx])}°</div><div class="fcard-min">/ ${Math.round(daily.temperature_2m_min[idx])}°</div></div>
+          <div style="text-align:right;"><div class="fcard-temps">${Math.round(daily.temperature_2m_max[idx])}°</div><div class="fcard-min">/ ${Math.round(daily.temperature_2m_min[idx])}°</div></div>
         </div>
         <div class="fcard-details">
-          <span>${prec>0?`🌧 ${prec.toFixed(1)} mm`:' Bez opadów'}${prob!=null?' ('+prob+'%)':''}</span>
-          <span>💨 Max ${Math.round(daily.wind_speed_10m_max[idx])} km/h</span>
-          ${uvM!=null?`<span>☀️ UV ${Math.round(uvM)} (${uvL(uvM)})</span>`:''}
+          <span>${prec>0?`🌧 ${prec.toFixed(1)} mm (${prob||0}%)`:'☀️ Bez opadów'}</span>
+          <span>💨 ${Math.round(daily.wind_speed_10m_max[idx])} km/h · ☀️ UV ${Math.round(uvM||0)}</span>
           <span>🌅 ${sr2} · 🌇 ${ss2}</span>
         </div>
       </div>`;
