@@ -117,19 +117,19 @@ body{
 }
 
 /* ── FORECAST ── */
-.forecast-list{display:flex;flex-direction:column;gap:8px;margin-bottom:0;}
+.forecast-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;}
 .fcard{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:17px 19px;
 }
-.fcard-main{display:flex;align-items:center;justify-content:space-between;}
+.fcard-main{display:flex;align-items:flex-start;justify-content:space-between;}
 .fcard-left{display:flex;align-items:center;gap:12px;}
 .fcard-icon{font-size:58px;}
 .fcard-day{font-size:26px;font-weight:700;}
 .fcard-desc{font-size:22px;color:var(--text2);margin-top:3px;}
 .fcard-temps{font-size:43px;font-weight:700;text-align:right;}
 .fcard-min{font-size:24px;color:var(--text2);}
-.fcard-details{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:22px;color:var(--text2);}
+.fcard-details{display:flex;flex-wrap:wrap;gap:5px 10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:15px;color:var(--text2);}
 
 /* ── AQI ── */
 .aqi-hero{
@@ -512,7 +512,7 @@ async function fetchAll(){
     if(hourly)renderHourly(hourly);
 
     // Forecast
-    $('forecast-list').innerHTML=daily.time.slice(1,4).map((t,i)=>{
+    $('forecast-list').innerHTML=daily.time.slice(1,5).map((t,i)=>{
       const idx=i+1,d=new Date(t);
       const day=idx===1?'Jutro':DAYS[d.getDay()]+' '+d.getDate()+' '+MONTHS[d.getMonth()];
       const prec=daily.precipitation_sum[idx],prob=daily.precipitation_probability_max?.[idx];
