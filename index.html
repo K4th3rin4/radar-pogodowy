@@ -117,7 +117,7 @@ body{
 }
 
 /* ── FORECAST ── */
-.forecast-list{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0;}
+.forecast-list{display:grid;grid-template-columns:repeat(2,1fr)!important;gap:12px;margin-bottom:0;}
 .fcard{
   background:var(--bg2);border:1px solid var(--border);
   border-radius:var(--radius);padding:17px 19px;
@@ -535,7 +535,7 @@ async function fetchAll(){
         </div>
       </div>`;
     }).join('');
-    $('forecast-list').style.display='flex';
+    $('forecast-list').style.display='grid';
     $('forecast-title').style.display='block';
     $('div1').style.display='block';
 
