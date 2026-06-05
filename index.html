@@ -14,7 +14,7 @@
 <title>Radar Pogodowy</title>
 <style>
 /* ── RESET ── */
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;word-break:break-word;}
 
 /* ── THEMES ── */
 :root,[data-theme="dark"]{
@@ -38,16 +38,17 @@
 [data-theme="red"]{--bg:#1a0808;--bg2:#240e0e;--bg3:#331818;--text:#ffd4d4;--text2:#cc4444;--text3:#882222;--accent:#ff6666;--green:#3fb950;--yellow:#d29922;--red:#ff6666;--orange:#db6d28;--border:#441111;--radius:12px;}
 
 /* ── BASE ── */
-html{height:100%;width:100%;}html,body{overflow-x:hidden;}
+html{height:100%;width:100%;overflow-x:hidden;}
 body{
   background:var(--bg);color:var(--text);
   font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
   min-height:100vh;transition:background .2s,color .2s;
-  padding:0;
+  padding:0;width:100%;overflow-x:hidden;
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
 }
 
 /* ── LAYOUT ── */
-.page{width:100%;padding:14px 14px 2rem;}
+.page{width:100%;padding:14px 14px 2rem;box-sizing:border-box;overflow-x:hidden;}
 
 /* ── HEADER ── */
 .header{margin-bottom:1rem;}
