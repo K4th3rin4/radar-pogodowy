@@ -540,8 +540,32 @@ function renderAlerts(cur, daily, eAqi, hourly){
     maybeNotifyUpcoming(upcoming, notifLead, hourly, now);
   }
 
-  if(daily.precipitation_sum?.[0]>20)
+  // Intensywne opady z hourly (dokładny czas)
+  if(hourly){
+    const now2=new Date();
+    let heavyRainLabel=null;
+    for(let i=0;i<Math.min(hourly.time.length,24);i++){
+      const t2=new Date(hourly.time[i]);
+      const prec=hourly.precipitation?.[i]||0;
+      if(prec>=5){
+        const diff2=Math.round((t2-now2)/60000);
+        if(diff2<0){
+          // happening now
+          if(!heavyRainLabel) heavyRainLabel='teraz';
+        } else {
+          const h2=Math.floor(diff2/60),m2=diff2%60;
+          const hhmm2=t2.getHours().toString().padStart(2,'0')+':'+t2.getMinutes().toString().padStart(2,'0');
+          if(!heavyRainLabel) heavyRainLabel=(h2>0?`za ${h2}h${m2>0?' '+m2+'min':''}`:`za ${diff2} min`)+` (ok. ${hhmm2})`;
+        }
+        break;
+      }
+    }
+    if(heavyRainLabel) a.push([`🌧 Intensywne opady ${heavyRainLabel}`,'w']);
+    else if(daily.precipitation_sum?.[0]>20)
+      a.push(['🌧 Intensywne opady dziś: '+daily.precipitation_sum[0].toFixed(1)+'mm','w']);
+  } else if(daily.precipitation_sum?.[0]>20){
     a.push(['🌧 Intensywne opady dziś: '+daily.precipitation_sum[0].toFixed(1)+'mm','w']);
+  }
 
   const box=$('alerts-box');
   if(a.length){
