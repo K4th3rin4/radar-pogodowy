@@ -318,6 +318,42 @@ body{
   <div style="font-size:13px;color:var(--text2);margin-bottom:20px;">
     Dostosuj wielkość tekstu do swojego ekranu
   </div>
+
+  <div style="height:1px;background:var(--border);margin-bottom:18px;"></div>
+  <div style="font-size:16px;font-weight:700;margin-bottom:14px;">🔔 Powiadomienia pogodowe</div>
+
+  <div class="scale-row" style="margin-bottom:12px;">
+    <span class="scale-label">Ostrzegaj na ile przed zjawiskiem</span>
+    <select id="notif-lead" onchange="saveNotifLead(this.value)"
+      style="flex:1;padding:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:15px;">
+      <option value="30">30 minut wcześniej</option>
+      <option value="60" selected>1 godzinę wcześniej</option>
+      <option value="120">2 godziny wcześniej</option>
+      <option value="180">3 godziny wcześniej</option>
+    </select>
+  </div>
+
+  <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text2);">Alerty dla:</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-storm" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> ⛈ Burza
+    </label>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-rain" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 🌧 Ulewa
+    </label>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-wind" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 💨 Silny wiatr
+    </label>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-heat" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 🌡 Upał >33°C
+    </label>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-frost" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> ❄️ Mróz <-10°C
+    </label>
+    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-aqi" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 😷 Smog AQI>100
+    </label>
+  </div>
   <button class="settings-close" onclick="closeSettings()">Zamknij</button>
 </div>
 
@@ -381,16 +417,25 @@ function delSaved(i){saved.splice(i,1);localStorage.setItem('wx_saved',JSON.stri
 function loadSaved(i){const s=saved[i];lat=s.lat;lon=s.lon;locName=s.name;$('city-input').value=s.name;fetchAll();}
 
 // ══ NOTIFICATIONS ═════════════════════════════════════════════
-async function toggleNotif(){
+async async function toggleNotif(){
   if(!('Notification' in window)){alert('Powiadomienia niedostępne.');return;}
   if(!notifOn){const p=await Notification.requestPermission();if(p==='granted'){notifOn=true;$('notif-btn').textContent='🔔';new Notification('Radar Pogodowy',{body:'Powiadomienia włączone.'});}else alert('Zablokowane — zmień w ustawieniach przeglądarki.');}
   else{notifOn=false;$('notif-btn').textContent='🔕';}
 }
 function maybeNotify(cur){
-  if(!notifOn||Notification.permission!=='granted')return;
-  if(cur.weather_code>=95)new Notification('⛈ Burza!',{body:`Burza w ${locName}.`});
-  else if(cur.wind_speed_10m>50)new Notification('💨 Silny wiatr!',{body:`${Math.round(cur.wind_speed_10m)} km/h w ${locName}.`});
+  if(!notifOn||Notification.permission!=='granted') return;
+  const alerts=[];
+  if(cur.weather_code>=95) alerts.push('⛈ Burza!');
+  if(cur.wind_speed_10m>50) alerts.push('💨 Silny wiatr '+Math.round(cur.wind_speed_10m)+' km/h');
+  if(cur.temperature_2m>33) alerts.push('🌡 Upał '+Math.round(cur.temperature_2m)+'°C');
+  if(cur.temperature_2m<-10) alerts.push('❄️ Mróz '+Math.round(cur.temperature_2m)+'°C');
+  if(alerts.length){
+    new Notification('⚠️ '+alerts[0]+' — '+locName,{
+      body:alerts.join(', '),icon:'icon-192.png',badge:'icon-192.png'
+    });
+  }
 }
+
 
 // ══ HELPERS ═══════════════════════════════════════════════════
 function wdir(d){return WD[Math.round((d||0)/45)%8];}
@@ -433,21 +478,111 @@ function pcard(ico,lbl,val,inf){
 }
 
 // ══ ALERTS ════════════════════════════════════════════════════
-function renderAlerts(cur,daily,eAqi){
-  const a=[];
-  if(cur.temperature_2m>33)a.push(['🌡 Upał '+Math.round(cur.temperature_2m)+'°C','d']);
-  if(cur.temperature_2m<-10)a.push(['❄️ Mróz '+Math.round(cur.temperature_2m)+'°C','i']);
-  if(cur.wind_speed_10m>50)a.push(['💨 Silny wiatr '+Math.round(cur.wind_speed_10m)+' km/h','w']);
-  if(cur.wind_gusts_10m>70)a.push(['🌪 Porywy '+Math.round(cur.wind_gusts_10m)+' km/h','w']);
-  if(cur.weather_code>=95)a.push(['⛈ Burza','d']);
-  else if(cur.weather_code>=80)a.push(['🌧 Ulewa','w']);
-  if(daily.precipitation_sum?.[0]>20)a.push(['🌧 Intensywne opady '+daily.precipitation_sum[0].toFixed(1)+'mm','w']);
-  if(eAqi>150)a.push(['😷 Zanieczyszczenie AQI '+eAqi,'d']);
-  else if(eAqi>100)a.push(['😷 Podwyższone AQI '+eAqi,'w']);
+function renderAlerts(cur, daily, eAqi, hourly){
+  const a = [];
+
+  // Current conditions
+  if(cur.weather_code>=95) a.push(['⛈ Burza teraz!','d']);
+  else if(cur.weather_code>=80) a.push(['🌧 Ulewa teraz','w']);
+  if(cur.temperature_2m>33) a.push(['🌡 Upał '+Math.round(cur.temperature_2m)+'°C','d']);
+  if(cur.temperature_2m<-10) a.push(['❄️ Mróz '+Math.round(cur.temperature_2m)+'°C','i']);
+  if(cur.wind_speed_10m>50) a.push(['💨 Silny wiatr '+Math.round(cur.wind_speed_10m)+' km/h teraz','w']);
+  if(cur.wind_gusts_10m>70) a.push(['🌪 Porywy '+Math.round(cur.wind_gusts_10m)+' km/h','w']);
+  if(eAqi>150) a.push(['😷 Bardzo złe powietrze AQI '+eAqi,'d']);
+  else if(eAqi>100) a.push(['😷 Podwyższone AQI '+eAqi,'w']);
+
+  // Upcoming alerts from hourly data
+  if(hourly){
+    const now = new Date();
+    const alertWindow = 6; // hours to look ahead
+    const notifLead = parseInt(localStorage.getItem('wx_notif_lead')||'60'); // minutes
+
+    // Find upcoming events in next 6h
+    const upcoming = {storm:null, rain:null, wind:null, heat:null, frost:null};
+
+    for(let i=0; i<Math.min(hourly.time.length, alertWindow); i++){
+      const t = new Date(hourly.time[i]);
+      if(t <= now) continue;
+      const diffMin = Math.round((t - now) / 60000);
+      const hrs = Math.floor(diffMin/60), mins = diffMin%60;
+      const label = hrs>0 ? `za ${hrs}h ${mins>0?mins+'min':''}` : `za ${mins} min`;
+
+      const wc = hourly.weather_code?.[i];
+      const ws = hourly.wind_speed_10m?.[i];
+      const tmp = hourly.temperature_2m?.[i];
+
+      const ap=JSON.parse(localStorage.getItem('wx_alert_prefs')||'{}');
+      if(wc>=95 && !upcoming.storm && cur.weather_code<95 && ap.storm!==false){
+        upcoming.storm = label;
+        a.push([`⛈ Burza ${label}`,'d']);
+      }
+      if(wc>=80 && wc<95 && !upcoming.rain && cur.weather_code<80 && ap.rain!==false){
+        upcoming.rain = label;
+        a.push([`🌧 Ulewa ${label}`,'w']);
+      }
+      if(ws>50 && !upcoming.wind && cur.wind_speed_10m<=50 && ap.wind!==false){
+        upcoming.wind = label;
+        a.push([`💨 Silny wiatr ${label}`,'w']);
+      }
+      if(tmp>33 && !upcoming.heat && cur.temperature_2m<=33 && ap.heat!==false){
+        upcoming.heat = label;
+        a.push([`🌡 Upał ${label}`,'w']);
+      }
+      if(tmp<-10 && !upcoming.frost && cur.temperature_2m>=-10 && ap.frost!==false){
+        upcoming.frost = label;
+        a.push([`❄️ Mróz ${label}`,'i']);
+      }
+    }
+
+    // Push notifications for upcoming events
+    maybeNotifyUpcoming(upcoming, notifLead, hourly, now);
+  }
+
+  if(daily.precipitation_sum?.[0]>20)
+    a.push(['🌧 Intensywne opady dziś: '+daily.precipitation_sum[0].toFixed(1)+'mm','w']);
+
   const box=$('alerts-box');
-  if(a.length){box.innerHTML=a.map(([t,c])=>`<span class="alert-badge alert-${c}">${t}</span>`).join('');box.style.display='block';}
-  else box.style.display='none';
+  if(a.length){
+    box.innerHTML=a.map(([t,cl])=>`<span class="alert-badge alert-${cl}">${t}</span>`).join('');
+    box.style.display='block';
+  } else {
+    box.style.display='none';
+  }
 }
+
+function maybeNotifyUpcoming(upcoming, leadMin, hourly, now){
+  if(!notifOn || Notification.permission!=='granted') return;
+  const lastNotif = parseInt(localStorage.getItem('wx_last_notif')||'0');
+  if(Date.now() - lastNotif < 25*60*1000) return; // max 1 notif per 25min
+
+  const msgs = [];
+  for(const [key, label] of Object.entries(upcoming)){
+    if(!label) continue;
+    // Check if within notification lead time
+    const match = label.match(/za (\d+)h ?(\d+)?/) || label.match(/za (\d+) min/);
+    if(!match) continue;
+    let totalMin;
+    if(label.includes('h')){
+      totalMin = parseInt(match[1])*60 + parseInt(match[2]||0);
+    } else {
+      totalMin = parseInt(match[1]);
+    }
+    if(totalMin <= leadMin){
+      const names = {storm:'Burza',rain:'Ulewa',wind:'Silny wiatr',heat:'Upał',frost:'Mróz'};
+      msgs.push(names[key]+' '+label);
+    }
+  }
+  if(msgs.length){
+    new Notification('⚠️ Alert pogodowy — '+locName, {
+      body: msgs.join('\n'),
+      icon: 'icon-192.png',
+      badge: 'icon-192.png',
+      vibrate: [200,100,200]
+    });
+    localStorage.setItem('wx_last_notif', Date.now());
+  }
+}
+
 
 // ══ HOURLY CHART ══════════════════════════════════════════════
 function renderHourly(hourly){
@@ -598,7 +733,7 @@ async function fetchAll(){
       }
     }
 
-    renderAlerts(cur,daily,eAqi);
+    renderAlerts(cur,daily,eAqi,hourly);
 
     // Radar
     $('radar-iframe').src=`https://embed.windy.com/embed2.html?lat=${lat}&lon=${lon}&detailLat=${lat}&detailLon=${lon}&width=700&height=340&zoom=7&level=surface&overlay=rain&product=ecmwf&menu=&message=true&marker=true&calendar=now&type=map&location=coordinates&metricWind=km%2Fh&metricTemp=%C2%B0C`;
@@ -837,6 +972,7 @@ if('serviceWorker' in navigator){
 function openSettings(){
   $('settings-panel').classList.add('open');
   $('settings-overlay').classList.add('open');
+  loadAlertPrefs();
 }
 function closeSettings(){
   $('settings-panel').classList.remove('open');
@@ -855,6 +991,34 @@ function applyScale(val){
   if(slider) slider.value = saved;
   applyScale(saved);
 })();
+
+
+function saveNotifLead(val){
+  localStorage.setItem('wx_notif_lead', val);
+}
+function saveAlertPref(){
+  const prefs = {
+    storm: $('al-storm')?.checked ?? true,
+    rain:  $('al-rain')?.checked ?? true,
+    wind:  $('al-wind')?.checked ?? true,
+    heat:  $('al-heat')?.checked ?? true,
+    frost: $('al-frost')?.checked ?? true,
+    aqi:   $('al-aqi')?.checked ?? true,
+  };
+  localStorage.setItem('wx_alert_prefs', JSON.stringify(prefs));
+}
+function loadAlertPrefs(){
+  const saved = localStorage.getItem('wx_alert_prefs');
+  if(!saved) return;
+  const prefs = JSON.parse(saved);
+  for(const [key, val] of Object.entries(prefs)){
+    const el = $('al-'+key);
+    if(el) el.checked = val;
+  }
+  const lead = localStorage.getItem('wx_notif_lead')||'60';
+  const sel = $('notif-lead');
+  if(sel) sel.value = lead;
+}
 
 </script>
 </body>
