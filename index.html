@@ -17,7 +17,7 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;word-break:break-word;}
 
 /* ── THEMES ── */
-:root,[data-theme="dark"]{
+:root,[data-theme="dark"]{--scale:1;
   --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
   --text:#e6edf3;--text2:#7d8590;--text3:#484f58;
   --accent:#58a6ff;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;
@@ -53,18 +53,18 @@ body{
 /* ── HEADER ── */
 .header{margin-bottom:1rem;}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
-.app-title{font-size:38px;font-weight:700;display:flex;align-items:center;gap:.5rem;}
-.header-actions{display:flex;gap:8px;}
+.app-title{font-size:24px;font-weight:700;display:flex;align-items:center;gap:.4rem;white-space:nowrap;overflow:hidden;}
+.header-actions{display:flex;gap:6px;flex-shrink:0;}
 .btn{
   display:flex;align-items:center;justify-content:center;
-  min-width:76px;min-height:76px;padding:0 14px;
+  min-width:58px;min-height:58px;padding:0 14px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);
   font-size:35px;cursor:pointer;
   transition:border-color .15s,background .15s;
 }
 .btn:hover,.btn:active{border-color:var(--accent);background:var(--bg3);}
-.search-row{display:flex;gap:8px;flex-wrap:wrap;}
+.search-row{display:flex;gap:8px;flex-wrap:nowrap;}
 .search-input{
   flex:1;padding:20px 22px;
   background:var(--bg2);border:1px solid var(--border);
@@ -73,7 +73,7 @@ body{
 }
 .search-input:focus{border-color:var(--accent);}
 .btn-search{padding:0 24px;font-size:26px;font-weight:700;color:var(--accent);border-color:var(--accent);}
-.loc-label{font-size:20px;color:var(--text2);margin-top:.5rem;padding-left:2px;}
+.loc-label{font-size:13px;color:var(--text2);margin-top:.4rem;padding-left:2px;line-height:1.4;}
 
 /* ── SAVED CHIPS ── */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.75rem;}
@@ -102,13 +102,10 @@ body{
 
 /* ── WEATHER CARDS ── */
 .weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.wcard{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:14px;
-}
-.wcard-label{font-size:18px;color:var(--text2);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:500;}
-.wcard-val{font-size:40px;font-weight:700;line-height:1.1;margin-bottom:4px;}
-.wcard-sub{font-size:16px;color:var(--text2);margin-top:6px;line-height:1.4;}
+.wcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;display:flex;flex-direction:column;}
+.wcard-label{font-size:15px;color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:5px;font-weight:500;}
+.wcard-val{font-size:28px;font-weight:700;line-height:1.2;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wcard-sub{font-size:14px;color:var(--text2);margin-top:4px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .wcard.wide{grid-column:1/-1;}
 
 /* ── HOURLY CHART ── */
@@ -138,9 +135,9 @@ body{
 .aqi-circle{
   width:60px;height:60px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:29px;font-weight:700;flex-shrink:0;
+  font-size:22px;font-weight:700;flex-shrink:0;
 }
-.aqi-label{font-size:29px;font-weight:700;margin-bottom:4px;}
+.aqi-label{font-size:22px;font-weight:700;margin-bottom:4px;}
 .aqi-desc{font-size:20px;color:var(--text2);}
 .aqi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0;width:100%;}
 .aqi-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;}
@@ -193,6 +190,40 @@ body{
 
 /* ── SOURCE TAG ── */
 .source-tag{font-size:16px;color:var(--text2);margin-bottom:8px;text-align:right;}
+
+/* ── FONT SCALE ── */
+.wcard-val{font-size:calc(30px * var(--scale));}
+.wcard-label{font-size:calc(14px * var(--scale));}
+.wcard-sub{font-size:calc(13px * var(--scale));}
+.fcard-temps{font-size:calc(28px * var(--scale));}
+.fcard-day{font-size:calc(16px * var(--scale));}
+.fcard-desc{font-size:calc(13px * var(--scale));}
+.fcard-min{font-size:calc(14px * var(--scale));}
+.fcard-details{font-size:calc(12px * var(--scale));}
+.aqi-card-val{font-size:calc(26px * var(--scale));}
+.app-title{font-size:calc(24px * var(--scale));}
+
+/* ── SETTINGS PANEL ── */
+.settings-panel{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--bg2);border-top:2px solid var(--border);
+  padding:20px 20px 40px;border-radius:20px 20px 0 0;
+}
+.settings-panel.open{display:block;}
+.settings-overlay{
+  display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.5);
+}
+.settings-overlay.open{display:block;}
+.settings-title{font-size:18px;font-weight:700;margin-bottom:20px;}
+.scale-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.scale-label{font-size:15px;color:var(--text2);min-width:140px;}
+.scale-slider{flex:1;accent-color:var(--accent);}
+.scale-val{font-size:15px;font-weight:600;min-width:36px;text-align:right;}
+.settings-close{
+  width:100%;padding:14px;background:var(--accent);color:#fff;
+  border:none;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;
+}
+
 </style>
 </head>
 <body>
@@ -212,6 +243,7 @@ body{
     <button class="btn btn-search" id="search-btn" onclick="searchCity()">Szukaj</button>
     <button class="btn" onclick="useMyLocation()" title="Moja lokalizacja">📍</button>
     <button class="btn" onclick="saveLocation()" title="Zapisz">🔖</button>
+    <button class="btn" onclick="openSettings()" title="Ustawienia">⚙️</button>
   </div>
   <div class="loc-label" id="loc-label">Wpisz miasto i kliknij Szukaj</div>
 </div>
@@ -284,6 +316,21 @@ body{
 <div class="stitle" id="synop-title" style="display:none;">Stacja meteorologiczna IMGW</div>
 <p id="synop-desc" style="display:none;font-size:13px;color:var(--text2);margin-bottom:10px;">Aktualny pomiar z najbliższej stacji synoptycznej.</p>
 <div id="synop-card-wrap"></div>
+
+<div class="settings-overlay" id="settings-overlay" onclick="closeSettings()"></div>
+<div class="settings-panel" id="settings-panel">
+  <div class="settings-title">⚙️ Ustawienia</div>
+  <div class="scale-row">
+    <span class="scale-label">Rozmiar czcionki</span>
+    <input class="scale-slider" type="range" id="scale-slider" min="0.7" max="1.4" step="0.05" value="1"
+      oninput="applyScale(this.value)">
+    <span class="scale-val" id="scale-val">100%</span>
+  </div>
+  <div style="font-size:13px;color:var(--text2);margin-bottom:20px;">
+    Dostosuj wielkość tekstu do swojego ekranu
+  </div>
+  <button class="settings-close" onclick="closeSettings()">Zamknij</button>
+</div>
 
 <div class="footer">
   dane: <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a> +
@@ -796,6 +843,30 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').then(r=>console.log('SW ok')).catch(e=>console.log('SW err',e));
   });
 }
+
+// ── SETTINGS ──────────────────────────────────────────
+function openSettings(){
+  $('settings-panel').classList.add('open');
+  $('settings-overlay').classList.add('open');
+}
+function closeSettings(){
+  $('settings-panel').classList.remove('open');
+  $('settings-overlay').classList.remove('open');
+}
+function applyScale(val){
+  const pct = Math.round(val * 100);
+  document.documentElement.style.setProperty('--scale', val);
+  $('scale-val').textContent = pct + '%';
+  localStorage.setItem('wx_scale', val);
+}
+// Load saved scale
+(()=>{
+  const saved = localStorage.getItem('wx_scale') || '1';
+  const slider = $('scale-slider');
+  if(slider) slider.value = saved;
+  applyScale(saved);
+})();
+
 </script>
 </body>
 </html>
