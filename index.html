@@ -417,7 +417,7 @@ function delSaved(i){saved.splice(i,1);localStorage.setItem('wx_saved',JSON.stri
 function loadSaved(i){const s=saved[i];lat=s.lat;lon=s.lon;locName=s.name;$('city-input').value=s.name;fetchAll();}
 
 // ══ NOTIFICATIONS ═════════════════════════════════════════════
-async async function toggleNotif(){
+async function toggleNotif(){
   if(!('Notification' in window)){alert('Powiadomienia niedostępne.');return;}
   if(!notifOn){const p=await Notification.requestPermission();if(p==='granted'){notifOn=true;$('notif-btn').textContent='🔔';new Notification('Radar Pogodowy',{body:'Powiadomienia włączone.'});}else alert('Zablokowane — zmień w ustawieniach przeglądarki.');}
   else{notifOn=false;$('notif-btn').textContent='🔕';}
