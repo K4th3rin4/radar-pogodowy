@@ -52,27 +52,27 @@ body{
 
 /* ── HEADER ── */
 .header{margin-bottom:1rem;}
-.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem;}
-.app-title{font-size:24px;font-weight:700;display:flex;align-items:center;gap:.4rem;white-space:nowrap;overflow:hidden;}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.app-title{font-size:22px;font-weight:700;display:flex;align-items:center;gap:.4rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
 .header-actions{display:flex;gap:6px;flex-shrink:0;}
 .btn{
   display:flex;align-items:center;justify-content:center;
-  min-width:58px;min-height:58px;padding:0 14px;
+  min-width:44px;min-height:44px;padding:0 10px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);
-  font-size:35px;cursor:pointer;
+  font-size:20px;cursor:pointer;flex-shrink:0;
   transition:border-color .15s,background .15s;
 }
 .btn:hover,.btn:active{border-color:var(--accent);background:var(--bg3);}
-.search-row{display:flex;gap:8px;flex-wrap:nowrap;}
+.search-row{display:flex;gap:6px;align-items:center;flex-wrap:nowrap;}
 .search-input{
-  flex:1;padding:20px 22px;
+  flex:1;min-width:0;padding:12px 12px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);
-  font-size:26px;outline:none;
+  font-size:16px;outline:none;
 }
 .search-input:focus{border-color:var(--accent);}
-.btn-search{padding:0 24px;font-size:26px;font-weight:700;color:var(--accent);border-color:var(--accent);}
+.btn-search{padding:0 14px;font-size:16px;font-weight:700;color:var(--accent);border-color:var(--accent);}
 .loc-label{font-size:13px;color:var(--text2);margin-top:.4rem;padding-left:2px;line-height:1.4;}
 
 /* ── SAVED CHIPS ── */
@@ -201,7 +201,7 @@ body{
 .fcard-min{font-size:calc(14px * var(--scale));}
 .fcard-details{font-size:calc(12px * var(--scale));}
 .aqi-card-val{font-size:calc(26px * var(--scale));}
-.app-title{font-size:calc(24px * var(--scale));}
+.app-title{font-size:22px;font-weight:700;display:flex;align-items:center;gap:.4rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
 
 /* ── SETTINGS PANEL ── */
 .settings-panel{
