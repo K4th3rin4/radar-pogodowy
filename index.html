@@ -322,15 +322,22 @@ body{
   <div style="height:1px;background:var(--border);margin-bottom:18px;"></div>
   <div style="font-size:16px;font-weight:700;margin-bottom:14px;">🔔 Powiadomienia pogodowe</div>
 
-  <div class="scale-row" style="margin-bottom:12px;">
-    <span class="scale-label">Ostrzegaj na ile przed zjawiskiem</span>
-    <select id="notif-lead" onchange="saveNotifLead(this.value)"
-      style="flex:1;padding:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);border-radius:var(--radius);font-size:15px;">
-      <option value="30">30 minut wcześniej</option>
-      <option value="60" selected>1 godzinę wcześniej</option>
-      <option value="120">2 godziny wcześniej</option>
-      <option value="180">3 godziny wcześniej</option>
-    </select>
+  <div style="margin-bottom:14px;">
+    <div style="font-size:15px;font-weight:600;margin-bottom:10px;color:var(--text2);">Ostrzegaj przed zjawiskiem:</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-30" onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 30 min wcześniej
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-60" checked onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 1 godz. wcześniej
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-120" onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 2 godz. wcześniej
+      </label>
+      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-180" onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 3 godz. wcześniej
+      </label>
+    </div>
   </div>
 
   <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text2);">Alerty dla:</div>
@@ -512,7 +519,7 @@ function renderAlerts(cur, daily, eAqi, hourly){
   // Upcoming alerts from hourly data
   if(hourly){
     const now = new Date();
-    const notifLead = parseInt(localStorage.getItem('wx_notif_lead')||'60'); // minutes
+    const notifLeads = JSON.parse(localStorage.getItem('wx_notif_leads')||'[60]');
 
     // Find upcoming events in next 6h
     const upcoming = {storm:null, rain:null, wind:null, heat:null, frost:null};
@@ -555,7 +562,7 @@ function renderAlerts(cur, daily, eAqi, hourly){
     }
 
     // Push notifications for upcoming events
-    maybeNotifyUpcoming(upcoming, notifLead, hourly, now);
+    maybeNotifyUpcoming(upcoming, hourly, now);
   }
 
   // Intensywne opady z hourly (dokładny czas)
@@ -596,7 +603,7 @@ function renderAlerts(cur, daily, eAqi, hourly){
   }
 }
 
-function maybeNotifyUpcoming(upcoming, leadMin, hourly, now){
+function maybeNotifyUpcoming(upcoming, hourly, now){
   if(!notifOn || Notification.permission!=='granted') return;
   const lastNotif = parseInt(localStorage.getItem('wx_last_notif')||'0');
   if(Date.now() - lastNotif < 25*60*1000) return; // max 1 notif per 25min
@@ -611,9 +618,13 @@ function maybeNotifyUpcoming(upcoming, leadMin, hourly, now){
     if(matchH){ totalMin = parseInt(matchH[1])*60 + parseInt(matchH[2]||0); }
     else if(matchM){ totalMin = parseInt(matchM[1]); }
     else continue;
-    if(totalMin <= leadMin){
-      const names = {storm:'Burza',rain:'Ulewa',wind:'Silny wiatr',heat:'Upał',frost:'Mróz'};
-      msgs.push(names[key]+' '+label);
+    const names = {storm:'Burza',rain:'Intensywne opady',wind:'Silny wiatr',heat:'Upał',frost:'Mróz'};
+    for(const leadMin of notifLeads){
+      if(totalMin<=leadMin && totalMin>leadMin-35){
+        // Within this lead time window (±35min to avoid duplicate notifications)
+        msgs.push(names[key]+' '+label+' (alert '+(leadMin>=60?Math.round(leadMin/60)+'h':'30min')+' przed)');
+        break;
+      }
     }
   }
   if(msgs.length){
@@ -1044,8 +1055,10 @@ function applyScale(val){
 
 
 
-function saveNotifLead(val){
-  localStorage.setItem('wx_notif_lead', val);
+function saveNotifLeads(){
+  const leads=[];
+  [30,60,120,180].forEach(v=>{if($('lead-'+v)?.checked)leads.push(v);});
+  localStorage.setItem('wx_notif_leads', JSON.stringify(leads.length?leads:[60]));
 }
 function saveAlertPref(){
   const prefs = {
@@ -1066,9 +1079,8 @@ function loadAlertPrefs(){
     const el = $('al-'+key);
     if(el) el.checked = val;
   }
-  const lead = localStorage.getItem('wx_notif_lead')||'60';
-  const sel = $('notif-lead');
-  if(sel) sel.value = lead;
+  const leads = JSON.parse(localStorage.getItem('wx_notif_leads')||'[60]');
+  [30,60,120,180].forEach(v=>{const el=$('lead-'+v);if(el)el.checked=leads.includes(v);});
 }
 
 </script>
