@@ -403,7 +403,19 @@ function applyTheme(id){
   const m=$('theme-meta');if(m&&colors[id])m.setAttribute('content',colors[id]);
 }
 function cycleTheme(){applyTheme(THEMES[(themeIdx+1)%THEMES.length].id);}
-(()=>{const t=localStorage.getItem('wx_theme')||'dark';applyTheme(t);})();
+(()=>{
+  // Restore theme
+  const t=localStorage.getItem('wx_theme')||'dark';applyTheme(t);
+  // Restore notifications state
+  if(localStorage.getItem('wx_notif')==='1'&&Notification.permission==='granted'){
+    notifOn=true;
+    const nb=$('notif-btn');if(nb)nb.textContent='🔔';
+  }
+  // Restore font scale
+  const sc=localStorage.getItem('wx_scale')||'1';
+  const sl=$('scale-slider');if(sl)sl.value=sc;
+  applyScale(sc);
+})();
 
 // ══ SAVED ═════════════════════════════════════════════════════
 function renderSaved(){
@@ -419,8 +431,8 @@ function loadSaved(i){const s=saved[i];lat=s.lat;lon=s.lon;locName=s.name;$('cit
 // ══ NOTIFICATIONS ═════════════════════════════════════════════
 async function toggleNotif(){
   if(!('Notification' in window)){alert('Powiadomienia niedostępne.');return;}
-  if(!notifOn){const p=await Notification.requestPermission();if(p==='granted'){notifOn=true;$('notif-btn').textContent='🔔';new Notification('Radar Pogodowy',{body:'Powiadomienia włączone.'});}else alert('Zablokowane — zmień w ustawieniach przeglądarki.');}
-  else{notifOn=false;$('notif-btn').textContent='🔕';}
+  if(!notifOn){const p=await Notification.requestPermission();if(p==='granted'){notifOn=true;localStorage.setItem('wx_notif','1');$('notif-btn').textContent='🔔';new Notification('Radar Pogodowy',{body:'Powiadomienia włączone.',icon:'icon-192.png'});}else alert('Zablokowane — zmień w ustawieniach przeglądarki.');}
+  else{notifOn=false;localStorage.removeItem('wx_notif');$('notif-btn').textContent='🔕';}
 }
 function maybeNotify(cur){
   if(!notifOn||Notification.permission!=='granted') return;
@@ -431,8 +443,14 @@ function maybeNotify(cur){
   if(cur.temperature_2m<-10) alerts.push('❄️ Mróz '+Math.round(cur.temperature_2m)+'°C');
   if(alerts.length){
     new Notification('⚠️ '+alerts[0]+' — '+locName,{
-      body:alerts.join(', '),icon:'icon-192.png',badge:'icon-192.png'
+      body:alerts.join(', '),icon:'icon-192.png',badge:'icon-192.png',
+      vibrate:[300,100,300,100,300]
     });
+    try{
+      const ctx2=new(window.AudioContext||window.webkitAudioContext)();
+      const pb=(f,s,d)=>{const o=ctx2.createOscillator(),g=ctx2.createGain();o.connect(g);g.connect(ctx2.destination);o.frequency.value=f;o.type='sine';g.gain.setValueAtTime(0.4,ctx2.currentTime+s);g.gain.exponentialRampToValueAtTime(0.01,ctx2.currentTime+s+d);o.start(ctx2.currentTime+s);o.stop(ctx2.currentTime+s+d);};
+      pb(880,0,0.15);pb(660,0.2,0.15);pb(880,0.4,0.3);
+    }catch(e){}
   }
 }
 
@@ -549,8 +567,7 @@ function renderAlerts(cur, daily, eAqi, hourly){
       const prec=hourly.precipitation?.[i]||0;
       if(prec>=5){
         const diff2=Math.round((t2-now2)/60000);
-        if(diff2<0){
-          // happening now
+        if(diff2<=0){
           if(!heavyRainLabel) heavyRainLabel='teraz';
         } else {
           const h2=Math.floor(diff2/60),m2=diff2%60;
@@ -560,9 +577,12 @@ function renderAlerts(cur, daily, eAqi, hourly){
         break;
       }
     }
-    if(heavyRainLabel) a.push([`🌧 Intensywne opady ${heavyRainLabel}`,'w']);
-    else if(daily.precipitation_sum?.[0]>20)
+    if(heavyRainLabel){
+      a.push([`🌧 Intensywne opady ${heavyRainLabel}`,'w']);
+      if(!upcoming.rain) upcoming.rain = heavyRainLabel;
+    } else if(daily.precipitation_sum?.[0]>20){
       a.push(['🌧 Intensywne opady dziś: '+daily.precipitation_sum[0].toFixed(1)+'mm','w']);
+    }
   } else if(daily.precipitation_sum?.[0]>20){
     a.push(['🌧 Intensywne opady dziś: '+daily.precipitation_sum[0].toFixed(1)+'mm','w']);
   }
@@ -585,14 +605,12 @@ function maybeNotifyUpcoming(upcoming, leadMin, hourly, now){
   for(const [key, label] of Object.entries(upcoming)){
     if(!label) continue;
     // Check if within notification lead time
-    const match = label.match(/za (\d+)h ?(\d+)?/) || label.match(/za (\d+) min/);
-    if(!match) continue;
+    const matchH = label.match(/za (\d+)h(?:\s*(\d+)min)?/);
+    const matchM = label.match(/za (\d+) min/);
     let totalMin;
-    if(label.includes('h')){
-      totalMin = parseInt(match[1])*60 + parseInt(match[2]||0);
-    } else {
-      totalMin = parseInt(match[1]);
-    }
+    if(matchH){ totalMin = parseInt(matchH[1])*60 + parseInt(matchH[2]||0); }
+    else if(matchM){ totalMin = parseInt(matchM[1]); }
+    else continue;
     if(totalMin <= leadMin){
       const names = {storm:'Burza',rain:'Ulewa',wind:'Silny wiatr',heat:'Upał',frost:'Mróz'};
       msgs.push(names[key]+' '+label);
@@ -603,8 +621,21 @@ function maybeNotifyUpcoming(upcoming, leadMin, hourly, now){
       body: msgs.join('\n'),
       icon: 'icon-192.png',
       badge: 'icon-192.png',
-      vibrate: [200,100,200]
+      vibrate: [300,100,300,100,300]
     });
+    // Play alert sound
+    try{
+      const ctx=new(window.AudioContext||window.webkitAudioContext)();
+      const playBeep=(freq,start,dur)=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.frequency.value=freq;o.type='sine';
+        g.gain.setValueAtTime(0.4,ctx.currentTime+start);
+        g.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+start+dur);
+        o.start(ctx.currentTime+start);o.stop(ctx.currentTime+start+dur);
+      };
+      playBeep(880,0,0.15);playBeep(660,0.2,0.15);playBeep(880,0.4,0.3);
+    }catch(e){}
     localStorage.setItem('wx_last_notif', Date.now());
   }
 }
@@ -1010,13 +1041,7 @@ function applyScale(val){
   $('scale-val').textContent = pct + '%';
   localStorage.setItem('wx_scale', val);
 }
-// Load saved scale
-(()=>{
-  const saved = localStorage.getItem('wx_scale') || '1';
-  const slider = $('scale-slider');
-  if(slider) slider.value = saved;
-  applyScale(saved);
-})();
+
 
 
 function saveNotifLead(val){
