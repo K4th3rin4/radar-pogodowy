@@ -516,13 +516,14 @@ function renderAlerts(cur, daily, eAqi, hourly){
   if(eAqi>150) a.push(['😷 Bardzo złe powietrze AQI '+eAqi,'d']);
   else if(eAqi>100) a.push(['😷 Podwyższone AQI '+eAqi,'w']);
 
+  // Find upcoming events
+  const upcoming = {storm:null, rain:null, wind:null, heat:null, frost:null};
+  const notifLeads = JSON.parse(localStorage.getItem('wx_notif_leads')||'[60]');
+  const nowTime = new Date();
+
   // Upcoming alerts from hourly data
   if(hourly){
-    const now = new Date();
-    const notifLeads = JSON.parse(localStorage.getItem('wx_notif_leads')||'[60]');
-
-    // Find upcoming events in next 6h
-    const upcoming = {storm:null, rain:null, wind:null, heat:null, frost:null};
+    const now = nowTime;
 
     for(let i=0; i<Math.min(hourly.time.length, 24); i++){
       const t = new Date(hourly.time[i]);
@@ -561,8 +562,6 @@ function renderAlerts(cur, daily, eAqi, hourly){
       }
     }
 
-    // Push notifications for upcoming events
-    maybeNotifyUpcoming(upcoming, hourly, now, notifLeads);
   }
 
   // Intensywne opady z hourly (dokładny czas)
@@ -593,6 +592,9 @@ function renderAlerts(cur, daily, eAqi, hourly){
   } else if(daily.precipitation_sum?.[0]>20){
     a.push(['🌧 Intensywne opady dziś: '+daily.precipitation_sum[0].toFixed(1)+'mm','w']);
   }
+
+  // Push notifications for upcoming events (after both hourly blocks computed upcoming)
+  if(hourly) maybeNotifyUpcoming(upcoming, hourly, nowTime, notifLeads);
 
   const box=$('alerts-box');
   if(a.length){
