@@ -562,7 +562,7 @@ function renderAlerts(cur, daily, eAqi, hourly){
     }
 
     // Push notifications for upcoming events
-    maybeNotifyUpcoming(upcoming, hourly, now);
+    maybeNotifyUpcoming(upcoming, hourly, now, notifLeads);
   }
 
   // Intensywne opady z hourly (dokładny czas)
@@ -603,7 +603,7 @@ function renderAlerts(cur, daily, eAqi, hourly){
   }
 }
 
-function maybeNotifyUpcoming(upcoming, hourly, now){
+function maybeNotifyUpcoming(upcoming, hourly, now, notifLeads){
   if(!notifOn || Notification.permission!=='granted') return;
   const lastNotif = parseInt(localStorage.getItem('wx_last_notif')||'0');
   if(Date.now() - lastNotif < 25*60*1000) return; // max 1 notif per 25min
