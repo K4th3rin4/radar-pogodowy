@@ -393,8 +393,66 @@ const KNOWN_RIVERS={'sekwana':[48.85,2.35],'seine':[48.85,2.35],'tamiza':[51.50,
 
 const SYNOP_COORDS={'12295':[53.10,23.16],'12600':[49.80,19.00],'12155':[54.38,18.63],'12300':[52.73,15.28],'12435':[51.75,18.08],'12570':[50.87,20.62],'12415':[51.20,16.15],'12125':[54.55,17.75],'12495':[51.22,22.40],'12120':[54.75,17.53],'12465':[51.72,19.40],'12270':[53.12,20.38],'12205':[53.77,20.43],'12310':[53.42,14.62],'12325':[52.42,16.83],'12220':[54.13,22.95],'12375':[52.17,20.97],'12385':[51.10,17.00],'12445':[51.42,21.97],'12450':[51.23,22.52],'12475':[50.10,22.05],'12488':[51.58,21.55],'12566':[50.07,19.97],'12490':[50.67,17.97],'12405':[51.92,15.53],'12418':[51.83,16.58],'12160':[54.17,19.43],'12500':[50.90,15.78]};
 
+
+// Mapowanie nazw województw (geocoding -> format IMGW)
+const VOIV_NORMALIZE = {
+  'mazowieckie':'mazowieckie','dolnośląskie':'dolnośląskie','kujawsko-pomorskie':'kujawsko-pomorskie',
+  'lubelskie':'lubelskie','lubuskie':'lubuskie','łódzkie':'łódzkie','małopolskie':'małopolskie',
+  'opolskie':'opolskie','podkarpackie':'podkarpackie','podlaskie':'podlaskie','pomorskie':'pomorskie',
+  'śląskie':'śląskie','świętokrzyskie':'świętokrzyskie','warmińsko-mazurskie':'warmińsko-mazurskie',
+  'wielkopolskie':'wielkopolskie','zachodniopomorskie':'zachodniopomorskie'
+};
+
+// Cache ostrzeżeń RCB (odświeżane co 10 min razem z resztą danych)
+let rcbWarningsCache = null;
+let rcbWarningsCacheTime = 0;
+
+async function fetchRcbWarnings(){
+  const now = Date.now();
+  if(rcbWarningsCache && (now - rcbWarningsCacheTime) < 9*60*1000) return rcbWarningsCache;
+  try{
+    const r = await fetch('https://meteo.imgw.pl/api/meteo/messages/v1/osmet/latest/osmet-teryt');
+    if(!r.ok) return null;
+    const d = await r.json();
+    rcbWarningsCache = d;
+    rcbWarningsCacheTime = now;
+    return d;
+  }catch(e){ return null; }
+}
+
+// Filtruje ostrzeżenia dla danego województwa na podstawie pola SMS
+function getRelevantRcbWarnings(rcbData, voivodeship){
+  if(!rcbData?.warnings || !voivodeship) return [];
+  const voivLower = voivodeship.toLowerCase();
+  const now = new Date();
+  const result = [];
+  for(const [id, w] of Object.entries(rcbData.warnings)){
+    const sms = (w.SMS||'').toLowerCase();
+    const content = (w.Content||'').toLowerCase();
+    if(!sms.includes(voivLower)) continue;
+    // Check if still valid
+    const validTo = new Date(w.LxValidTo);
+    if(validTo < now) continue;
+    result.push({
+      id, code: w.PhenomenonCode, name: w.PhenomenonName, level: parseInt(w.Level)||1,
+      content: w.Content, validFrom: w.LxValidFrom, validTo: w.LxValidTo,
+      hasHail: content.includes('grad')
+    });
+  }
+  return result;
+}
+
+// Ikony i kolory dla typów zjawisk RCB
+const RCB_ICONS = {
+  'BU':'⛈','Burze':'⛈','ID':'🌧','Intensywne opady deszczu':'🌧','SW':'💨','Silny wiatr':'💨',
+  'UP':'🌡','Upał':'🌡','MR':'❄️','Mróz':'❄️','IS':'❄️','Intensywne opady śniegu':'❄️',
+  'ZL':'🧊','Zamarzanie':'🧊','GR':'🧊','Grad':'🧊','MG':'🌫','Mgła':'🌫',
+  'BS':'❄️','Burze śnieżne':'❄️','RO':'🥶','Przymrozki':'🥶'
+};
+
 // ══ STATE ═════════════════════════════════════════════════════
 let lat=52.23,lon=21.01,locName='Warszawa';
+let currentVoivodeship='mazowieckie';
 let notifOn=false,themeIdx=0,hydroData=null;
 let saved=JSON.parse(localStorage.getItem('wx_saved')||'[]');
 const $=id=>document.getElementById(id);
@@ -518,8 +576,22 @@ function pcard(ico,lbl,val,inf){
 }
 
 // ══ ALERTS ════════════════════════════════════════════════════
-function renderAlerts(cur, daily, eAqi, hourly){
+async function renderAlerts(cur, daily, eAqi, hourly){
   const a = [];
+
+  // ── RCB / IMGW official warnings ──
+  if(currentVoivodeship){
+    const rcb = await fetchRcbWarnings();
+    const relevant = getRelevantRcbWarnings(rcb, currentVoivodeship);
+    for(const w of relevant){
+      const icon = RCB_ICONS[w.name] || RCB_ICONS[w.code] || '⚠️';
+      const levelTxt = w.level>=3?'st.3':w.level===2?'st.2':'st.1';
+      const cls = w.level>=2 ? 'd' : 'w';
+      let label = `${icon} ${w.name} (${levelTxt}, IMGW)`;
+      if(w.hasHail && w.code!=='GR') label += ' + grad';
+      a.push([label, cls]);
+    }
+  }
 
   // Current conditions
   if(cur.weather_code>=95) a.push(['⛈ Burza teraz!','d']);
@@ -818,7 +890,7 @@ async function fetchAll(){
       }
     }
 
-    renderAlerts(cur,daily,eAqi,hourly);
+    await renderAlerts(cur,daily,eAqi,hourly);
 
     // Radar
     $('radar-iframe').src=`https://embed.windy.com/embed2.html?lat=${lat}&lon=${lon}&detailLat=${lat}&detailLon=${lon}&width=700&height=340&zoom=7&level=surface&overlay=rain&product=ecmwf&menu=&message=true&marker=true&calendar=now&type=map&location=coordinates&metricWind=km%2Fh&metricTemp=%C2%B0C`;
@@ -859,6 +931,7 @@ async function searchCity(){
     lat=best.latitude;lon=best.longitude;
     const parts=[];if(best.country)parts.push(best.country);if(best.admin1&&best.admin1!==best.name)parts.push(best.admin1);parts.push(best.name);
     locName=parts.join(' · ');
+    currentVoivodeship = (best.country_code==='PL') ? (best.admin1||'') : '';
     localStorage.setItem('wx_last_city',best.name);
     fetchAll();
   }catch(e){showErr('Błąd wyszukiwania.');setLoad(false);}
