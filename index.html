@@ -438,9 +438,24 @@ function loadSaved(i){const s=saved[i];lat=s.lat;lon=s.lon;locName=s.name;$('cit
 // ══ NOTIFICATIONS ═════════════════════════════════════════════
 async function toggleNotif(){
   if(!('Notification' in window)){alert('Powiadomienia niedostępne.');return;}
-  if(!notifOn){const p=await Notification.requestPermission();if(p==='granted'){notifOn=true;localStorage.setItem('wx_notif','1');$('notif-btn').textContent='🔔';new Notification('Radar Pogodowy',{body:'Powiadomienia włączone.',icon:'icon-192.png'});}else alert('Zablokowane — zmień w ustawieniach przeglądarki.');}
+  if(!notifOn){const p=await Notification.requestPermission();if(p==='granted'){notifOn=true;localStorage.setItem('wx_notif','1');$('notif-btn').textContent='🔔';showNotif('Radar Pogodowy',{body:'Powiadomienia włączone.',icon:'icon-192.png'});}else alert('Zablokowane — zmień w ustawieniach przeglądarki.');}
   else{notifOn=false;localStorage.removeItem('wx_notif');$('notif-btn').textContent='🔕';}
 }
+
+// ── NOTIFICATION HELPER (Android PWA requires Service Worker) ──
+function showNotif(title, options){
+  if(Notification.permission !== 'granted') return;
+  if('serviceWorker' in navigator && navigator.serviceWorker.ready){
+    navigator.serviceWorker.ready.then(reg => {
+      reg.showNotification(title, options);
+    }).catch(()=>{
+      try{ new Notification(title, options); }catch(e){}
+    });
+  } else {
+    try{ new Notification(title, options); }catch(e){}
+  }
+}
+
 function maybeNotify(cur){
   if(!notifOn||Notification.permission!=='granted') return;
   const alerts=[];
@@ -449,7 +464,7 @@ function maybeNotify(cur){
   if(cur.temperature_2m>33) alerts.push('🌡 Upał '+Math.round(cur.temperature_2m)+'°C');
   if(cur.temperature_2m<-10) alerts.push('❄️ Mróz '+Math.round(cur.temperature_2m)+'°C');
   if(alerts.length){
-    new Notification('⚠️ '+alerts[0]+' — '+locName,{
+    showNotif('⚠️ '+alerts[0]+' — '+locName,{
       body:alerts.join(', '),icon:'icon-192.png',badge:'icon-192.png',
       vibrate:[300,100,300,100,300]
     });
@@ -630,7 +645,7 @@ function maybeNotifyUpcoming(upcoming, hourly, now, notifLeads){
     }
   }
   if(msgs.length){
-    new Notification('⚠️ Alert pogodowy — '+locName, {
+    showNotif('⚠️ Alert pogodowy — '+locName, {
       body: msgs.join('\n'),
       icon: 'icon-192.png',
       badge: 'icon-192.png',
