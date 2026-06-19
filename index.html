@@ -255,22 +255,26 @@ body{
 
 <!-- WEATHER CARDS -->
 <div class="stitle" id="weather-title" style="display:none;">Aktualna pogoda</div>
+<p id="weather-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Dane na żywo z modelu Open-Meteo, aktualizowane co 10 minut.</p>
 <div class="weather-grid" id="weather-grid" style="display:none;"></div>
 
 <!-- HOURLY CHART -->
 <div class="stitle" id="hourly-title" style="display:none;">Prognoza godzinowa — 24h</div>
+<p id="hourly-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Temperatura, opady i prawdopodobieństwo deszczu na najbliższą dobę.</p>
 <div class="chart-box" id="hourly-box" style="display:none;">
   <svg id="hourly-svg" viewBox="0 0 700 180" style="width:100%;max-height:220px;display:block;margin:0;"></svg>
 </div>
 
 <!-- FORECAST -->
 <div class="stitle" id="forecast-title" style="display:none;">Prognoza 4-dniowa</div>
+<p id="forecast-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Prognozowane warunki na kolejne dni, w tym wiatr, UV i opady.</p>
 <div class="forecast-list" id="forecast-list" style="display:none;"></div>
 
 <hr class="divider" id="div1" style="display:none;">
 
 <!-- AQI -->
 <div class="stitle" id="aqi-title" style="display:none;">Jakość powietrza</div>
+<p id="aqi-desc-sub" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Indeks AQI i stężenia zanieczyszczeń wg danych Copernicus CAMS.</p>
 <div id="aqi-hero" style="display:none;"></div>
 <div class="aqi-grid" id="aqi-grid" style="display:none;"></div>
 
@@ -278,13 +282,14 @@ body{
 
 <!-- POLLEN -->
 <div class="stitle" id="pollen-title" style="display:none;">Pyłki i alergeny</div>
-<p id="pollen-desc" style="display:none;font-size:13px;color:var(--text2);margin-bottom:10px;">Dane Copernicus CAMS, aktualizowane co godzinę.</p>
+<p id="pollen-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Dane Copernicus CAMS, aktualizowane co godzinę.</p>
 <div class="pollen-grid" id="pollen-grid" style="display:none;"></div>
 
 <hr class="divider" id="div3" style="display:none;">
 
 <!-- RADAR -->
 <div class="stitle" id="radar-title" style="display:none;">Radar opadów na żywo</div>
+<p id="radar-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Interaktywna mapa opadów w czasie rzeczywistym — Windy.com.</p>
 <div class="radar-box" id="radar-box" style="display:none;">
   <iframe id="radar-iframe" src="" loading="lazy" title="Radar" allowfullscreen></iframe>
   <a class="radar-ext" href="https://www.pogodairadar.pl/radar-pogodowy" target="_blank">↗ pogodairadar.pl</a>
@@ -294,6 +299,7 @@ body{
 
 <!-- HYDRO -->
 <div class="stitle" id="hydro-title" style="display:none;">Stany rzek</div>
+<p id="hydro-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Aktualne stany wód — IMGW dla Polski, Copernicus GloFAS dla świata.</p>
 <div class="hydro-controls" id="hydro-controls" style="display:none;">
   <input class="hydro-input" id="hydro-input" type="text" placeholder="Rzeka, województwo...">
   <button class="btn btn-search" id="hydro-search-btn" onclick="searchHydro()">Szukaj</button>
@@ -309,7 +315,7 @@ body{
 
 <!-- SYNOP -->
 <div class="stitle" id="synop-title" style="display:none;">Stacja meteorologiczna IMGW</div>
-<p id="synop-desc" style="display:none;font-size:13px;color:var(--text2);margin-bottom:10px;">Aktualny pomiar z najbliższej stacji synoptycznej.</p>
+<p id="synop-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Aktualny pomiar z najbliższej stacji synoptycznej.</p>
 <div id="synop-card-wrap"></div>
 
 <div class="settings-overlay" id="settings-overlay" onclick="closeSettings()"></div>
@@ -813,6 +819,7 @@ function renderHourly(hourly){
   $('hourly-svg').innerHTML=s;
   $('hourly-box').style.display='block';
   $('hourly-title').style.display='block';
+  $('hourly-desc').style.display='block';
 }
 
 // ══ SHOW/HIDE SECTIONS ════════════════════════════════════════
@@ -877,6 +884,7 @@ async function fetchAll(){
 
     $('weather-grid').style.display='grid';
     $('weather-title').style.display='block';
+  $('weather-desc').style.display='block';
 
     if(hourly)renderHourly(hourly);
 
@@ -905,6 +913,7 @@ async function fetchAll(){
     }).join('');
     $('forecast-list').style.display='grid';
     $('forecast-title').style.display='block';
+  $('forecast-desc').style.display='block';
     $('div1').style.display='block';
 
     // AQI
@@ -919,6 +928,7 @@ async function fetchAll(){
       $('aqi-grid').innerHTML=acard('PM2.5',pm25,'µg/m³ (limit: 25)',pm25/25*100,'var(--orange)')+acard('PM10',pm10,'µg/m³ (limit: 50)',pm10/50*100,'var(--yellow)')+acard('NO₂',no2,'µg/m³ (limit: 40)',no2/40*100,'#bc8cff')+acard('O₃',o3,'µg/m³ (limit: 120)',o3/120*100,'var(--accent)')+acard('SO₂',so2,'µg/m³ (limit: 350)',so2/350*100,'var(--text2)')+acard('CO',co,'mg/m³ (limit: 10)',co/10*100,'var(--red)');
       $('aqi-grid').style.display='grid';
       $('aqi-title').style.display='block';
+  $('aqi-desc-sub').style.display='block';
       $('div2').style.display='block';
 
       if(aq.hourly){
@@ -939,10 +949,12 @@ async function fetchAll(){
     $('radar-iframe').src=`https://embed.windy.com/embed2.html?lat=${lat}&lon=${lon}&detailLat=${lat}&detailLon=${lon}&width=700&height=340&zoom=7&level=surface&overlay=rain&product=ecmwf&menu=&message=true&marker=true&calendar=now&type=map&location=coordinates&metricWind=km%2Fh&metricTemp=%C2%B0C`;
     $('radar-box').style.display='block';
     $('radar-title').style.display='block';
+  $('radar-desc').style.display='block';
     $('div4').style.display='block';
 
     // Hydro
     $('hydro-title').style.display='block';
+  $('hydro-desc').style.display='block';
     $('hydro-controls').style.display='flex';
     $('div5').style.display='block';
 
