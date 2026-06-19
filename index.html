@@ -499,6 +499,42 @@ let notifOn=false,themeIdx=0,hydroData=null;
 let saved=JSON.parse(localStorage.getItem('wx_saved')||'[]');
 const $=id=>document.getElementById(id);
 
+// ── QUICK NAV ──────────────────────────────────────────
+const QUICKNAV_SECTIONS = [
+  {id:'weather-title', icon:'🌡', label:'Pogoda'},
+  {id:'hourly-title', icon:'📈', label:'Godzinowa'},
+  {id:'forecast-title', icon:'📅', label:'Prognoza'},
+  {id:'aqi-title', icon:'💨', label:'Powietrze'},
+  {id:'pollen-title', icon:'🌾', label:'Pyłki'},
+  {id:'radar-title', icon:'🛰', label:'Radar'},
+  {id:'hydro-title', icon:'🌊', label:'Rzeki'},
+  {id:'synop-title', icon:'📡', label:'Stacja'},
+];
+
+function renderQuickNav(){
+  const wrap = $('quicknav-wrap');
+  const nav = $('quicknav');
+  const visible = QUICKNAV_SECTIONS.filter(s => {
+    const el = $(s.id);
+    return el && el.style.display !== 'none';
+  });
+  if(!visible.length){ wrap.style.display='none'; return; }
+  nav.innerHTML = visible.map(s =>
+    `<div class="quicknav-item" onclick="scrollToSection('${s.id}')">${s.icon} ${s.label}</div>`
+  ).join('');
+  wrap.style.display='block';
+}
+
+function scrollToSection(id){
+  const el = $(id);
+  if(!el) return;
+  const headerOffset = 12;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+  window.scrollTo({top:y, behavior:'smooth'});
+}
+
+
+
 // ══ THEME ═════════════════════════════════════════════════════
 function applyTheme(id){
   document.documentElement.setAttribute('data-theme',id);
@@ -1211,40 +1247,6 @@ async function loadHydroGlobal(sLat,sLon,cityName){
   $('hydro-global').style.display='block';
 }
 
-
-// ── QUICK NAV ──────────────────────────────────────────
-const QUICKNAV_SECTIONS = [
-  {id:'weather-title', icon:'🌡', label:'Pogoda'},
-  {id:'hourly-title', icon:'📈', label:'Godzinowa'},
-  {id:'forecast-title', icon:'📅', label:'Prognoza'},
-  {id:'aqi-title', icon:'💨', label:'Powietrze'},
-  {id:'pollen-title', icon:'🌾', label:'Pyłki'},
-  {id:'radar-title', icon:'🛰', label:'Radar'},
-  {id:'hydro-title', icon:'🌊', label:'Rzeki'},
-  {id:'synop-title', icon:'📡', label:'Stacja'},
-];
-
-function renderQuickNav(){
-  const wrap = $('quicknav-wrap');
-  const nav = $('quicknav');
-  const visible = QUICKNAV_SECTIONS.filter(s => {
-    const el = $(s.id);
-    return el && el.style.display !== 'none';
-  });
-  if(!visible.length){ wrap.style.display='none'; return; }
-  nav.innerHTML = visible.map(s =>
-    `<div class="quicknav-item" onclick="scrollToSection('${s.id}')">${s.icon} ${s.label}</div>`
-  ).join('');
-  wrap.style.display='block';
-}
-
-function scrollToSection(id){
-  const el = $(id);
-  if(!el) return;
-  const headerOffset = 12;
-  const y = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
-  window.scrollTo({top:y, behavior:'smooth'});
-}
 
 // ══ INIT ══════════════════════════════════════════════════════
 $('city-input').addEventListener('keydown',e=>{if(e.key==='Enter')searchCity();});
