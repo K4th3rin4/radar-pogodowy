@@ -219,6 +219,24 @@ body{
 .txt-lg{font-size:calc(21px * var(--scale));}
 .txt-muted{color:var(--text2);}
 .txt-bold{font-weight:600;}
+
+/* ── QUICK NAV ── */
+.quicknav-wrap{margin-bottom:14px;}
+.quicknav{
+  display:flex;gap:8px;overflow-x:auto;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;
+  padding-bottom:2px;
+}
+.quicknav::-webkit-scrollbar{display:none;}
+.quicknav-item{
+  flex-shrink:0;display:flex;align-items:center;gap:6px;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:20px;padding:9px 16px;
+  font-size:calc(15px * var(--scale));color:var(--text2);
+  cursor:pointer;white-space:nowrap;
+  transition:border-color .15s,color .15s,background .15s;
+}
+.quicknav-item:active{border-color:var(--accent);color:var(--accent);background:var(--bg3);}
 </style>
 </head>
 <body>
@@ -245,6 +263,11 @@ body{
 
 <!-- SAVED -->
 <div class="chips" id="saved-bar" style="display:none;"></div>
+
+<!-- QUICK NAV -->
+<div class="quicknav-wrap" id="quicknav-wrap" style="display:none;">
+  <div class="quicknav" id="quicknav"></div>
+</div>
 
 <!-- LOADING / ERROR -->
 <div class="loading" id="loading"><span class="spin"></span>Pobieranie danych...</div>
@@ -987,6 +1010,7 @@ async function fetchAll(){
     // Save settings
     if('caches' in window){caches.open('radar-v1').then(cache=>{cache.put('/settings.json',new Response(JSON.stringify({lat,lon,locName}),{headers:{'Content-Type':'application/json'}}));});}
     renderSaved();
+    renderQuickNav();
 
   }catch(e){showErr('Nie udało się pobrać danych: '+e.message);}
   setLoad(false);
@@ -1185,6 +1209,41 @@ async function loadHydroGlobal(sLat,sLon,cityName){
     <div class="txt-xs txt-muted" style="margin-top:6px;">Copernicus GloFAS · ~5 km</div>
   </div>`;
   $('hydro-global').style.display='block';
+}
+
+
+// ── QUICK NAV ──────────────────────────────────────────
+const QUICKNAV_SECTIONS = [
+  {id:'weather-title', icon:'🌡', label:'Pogoda'},
+  {id:'hourly-title', icon:'📈', label:'Godzinowa'},
+  {id:'forecast-title', icon:'📅', label:'Prognoza'},
+  {id:'aqi-title', icon:'💨', label:'Powietrze'},
+  {id:'pollen-title', icon:'🌾', label:'Pyłki'},
+  {id:'radar-title', icon:'🛰', label:'Radar'},
+  {id:'hydro-title', icon:'🌊', label:'Rzeki'},
+  {id:'synop-title', icon:'📡', label:'Stacja'},
+];
+
+function renderQuickNav(){
+  const wrap = $('quicknav-wrap');
+  const nav = $('quicknav');
+  const visible = QUICKNAV_SECTIONS.filter(s => {
+    const el = $(s.id);
+    return el && el.style.display !== 'none';
+  });
+  if(!visible.length){ wrap.style.display='none'; return; }
+  nav.innerHTML = visible.map(s =>
+    `<div class="quicknav-item" onclick="scrollToSection('${s.id}')">${s.icon} ${s.label}</div>`
+  ).join('');
+  wrap.style.display='block';
+}
+
+function scrollToSection(id){
+  const el = $(id);
+  if(!el) return;
+  const headerOffset = 12;
+  const y = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+  window.scrollTo({top:y, behavior:'smooth'});
 }
 
 // ══ INIT ══════════════════════════════════════════════════════
