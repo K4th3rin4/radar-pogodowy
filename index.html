@@ -60,7 +60,7 @@ body{
   min-width:44px;min-height:44px;padding:0 10px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);
-  font-size:20px;cursor:pointer;flex-shrink:0;
+  font-size:calc(20px * var(--scale));cursor:pointer;flex-shrink:0;
   transition:border-color .15s,background .15s;
 }
 .btn:hover,.btn:active{border-color:var(--accent);background:var(--bg3);}
@@ -69,40 +69,40 @@ body{
   flex:1;min-width:0;padding:12px 12px;
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);
-  font-size:16px;outline:none;
+  font-size:calc(16px * var(--scale));outline:none;
 }
 .search-input:focus{border-color:var(--accent);}
-.btn-search{padding:0 14px;font-size:16px;font-weight:700;color:var(--accent);border-color:var(--accent);}
-.loc-label{font-size:13px;color:var(--text2);margin-top:.4rem;padding-left:2px;line-height:1.4;}
+.btn-search{padding:0 14px;font-size:calc(16px * var(--scale));font-weight:700;color:var(--accent);border-color:var(--accent);}
+.loc-label{font-size:calc(13px * var(--scale));color:var(--text2);margin-top:.4rem;padding-left:2px;line-height:1.4;}
 
 /* ── SAVED CHIPS ── */
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.75rem;}
 .chip{
   display:inline-flex;align-items:center;gap:4px;
   background:var(--bg3);border:1px solid var(--border);
-  border-radius:20px;padding:6px 12px;font-size:19px;cursor:pointer;
+  border-radius:20px;padding:6px 12px;font-size:calc(14px * var(--scale));cursor:pointer;
 }
 .chip.active,.chip:hover{border-color:var(--accent);color:var(--accent);}
-.chip-del{font-size:23px;color:var(--text2);line-height:1;}
+.chip-del{font-size:calc(18px * var(--scale));color:var(--text2);line-height:1;}
 .chip-del:hover{color:var(--red);}
 
 /* ── ALERTS ── */
 .alerts{margin-bottom:.75rem;}
 .alert-badge{
   display:inline-flex;align-items:center;gap:6px;
-  font-size:19px;padding:6px 14px;border-radius:20px;margin:3px 4px 3px 0;
+  font-size:calc(14px * var(--scale));padding:6px 14px;border-radius:20px;margin:3px 4px 3px 0;
 }
 .alert-d{background:rgba(248,81,73,.1);color:#f85149;border:1px solid rgba(248,81,73,.3);}
 .alert-w{background:rgba(210,153,34,.1);color:#d29922;border:1px solid rgba(210,153,34,.3);}
 .alert-i{background:rgba(88,166,255,.1);color:#58a6ff;border:1px solid rgba(88,166,255,.3);}
 
 /* ── SECTION TITLE ── */
-.stitle{font-size:19px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:12px;}
+.stitle{font-size:calc(13px * var(--scale));font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text2);margin-bottom:12px;}
 .divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
 
 /* ── WEATHER CARDS ── */
 .weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.wcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;display:flex;flex-direction:column;}
+.wcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 14px;display:flex;flex-direction:column;}
 .wcard-label{font-size:calc(14px * var(--scale));color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:5px;font-weight:500;}
 .wcard-val{font-size:calc(30px * var(--scale));font-weight:700;line-height:1.1;margin-bottom:4px;}
 .wcard-sub{font-size:calc(13px * var(--scale));color:var(--text2);margin-top:4px;line-height:1.3;}
@@ -116,10 +116,10 @@ body{
 
 /* ── FORECAST ── */
 .forecast-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
-.fcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;}
+.fcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 14px;}
 .fcard-main{display:flex;flex-direction:column;gap:8px;}
 .fcard-left{display:flex;align-items:center;gap:8px;}
-.fcard-icon{font-size:42px;flex-shrink:0;}
+.fcard-icon{font-size:calc(28px * var(--scale));flex-shrink:0;}
 .fcard-day{font-size:calc(16px * var(--scale));font-weight:700;}
 .fcard-desc{font-size:calc(13px * var(--scale));color:var(--text2);margin-top:2px;}
 .fcard-temps{font-size:calc(28px * var(--scale));font-weight:700;}
@@ -135,15 +135,15 @@ body{
 .aqi-circle{
   width:60px;height:60px;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
-  font-size:22px;font-weight:700;flex-shrink:0;
+  font-size:calc(20px * var(--scale));font-weight:700;flex-shrink:0;
 }
-.aqi-label{font-size:22px;font-weight:700;margin-bottom:4px;}
-.aqi-desc{font-size:20px;color:var(--text2);}
+.aqi-label{font-size:calc(18px * var(--scale));font-weight:700;margin-bottom:4px;}
+.aqi-desc{font-size:calc(14px * var(--scale));color:var(--text2);}
 .aqi-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:0;width:100%;}
-.aqi-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;}
-.aqi-card-label{font-size:19px;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.aqi-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 14px;}
+.aqi-card-label{font-size:calc(13px * var(--scale));color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
 .aqi-card-val{font-size:calc(26px * var(--scale));font-weight:700;}
-.aqi-card-unit{font-size:17px;color:var(--text2);margin-top:4px;}
+.aqi-card-unit{font-size:calc(12px * var(--scale));color:var(--text2);margin-top:4px;}
 .bar-wrap{height:3px;background:var(--bg3);border-radius:2px;margin-top:8px;overflow:hidden;}
 .bar{height:100%;border-radius:2px;}
 
@@ -156,7 +156,7 @@ body{
 .radar-ext{
   position:absolute;top:10px;right:10px;
   background:rgba(13,17,23,.85);border:1px solid rgba(255,255,255,.15);
-  color:#fff;border-radius:8px;padding:6px 12px;font-size:17px;text-decoration:none;
+  color:#fff;border-radius:8px;padding:6px 12px;font-size:calc(13px * var(--scale));text-decoration:none;
 }
 
 /* ── HYDRO ── */
@@ -164,7 +164,7 @@ body{
 .hydro-input{
   flex:1;min-width:0;padding:12px 14px;
   background:var(--bg2);border:1px solid var(--border);
-  color:var(--text);border-radius:var(--radius);font-size:22px;outline:none;
+  color:var(--text);border-radius:var(--radius);font-size:calc(16px * var(--scale));outline:none;
 }
 .hydro-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 
@@ -174,22 +174,22 @@ body{
   border-radius:var(--radius);padding:14px;
 }
 .synop-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:6px;}
-.synop-name{font-size:23px;font-weight:700;}
-.synop-time{font-size:17px;color:var(--text2);}
+.synop-name{font-size:calc(18px * var(--scale));font-weight:700;}
+.synop-time{font-size:calc(13px * var(--scale));color:var(--text2);}
 .synop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 
 /* ── LOADING / ERROR ── */
-.loading{display:none;text-align:center;padding:2rem;color:var(--text2);font-size:20px;}
+.loading{display:none;text-align:center;padding:2rem;color:var(--text2);font-size:calc(15px * var(--scale));}
 .spin{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;margin-right:8px;}
 @keyframes sp{to{transform:rotate(360deg);}}
-.err{display:none;background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);color:#f85149;font-size:20px;padding:12px 14px;border-radius:var(--radius);margin-bottom:.75rem;}
+.err{display:none;background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);color:#f85149;font-size:calc(15px * var(--scale));padding:12px 14px;border-radius:var(--radius);margin-bottom:.75rem;}
 
 /* ── FOOTER ── */
-.footer{text-align:center;font-size:17px;color:var(--text2);margin-top:1.5rem;padding-bottom:1rem;}
+.footer{text-align:center;font-size:calc(12px * var(--scale));color:var(--text2);margin-top:1.5rem;padding-bottom:1rem;}
 .footer a{color:var(--text2);}
 
 /* ── SOURCE TAG ── */
-.source-tag{font-size:16px;color:var(--text2);margin-bottom:8px;text-align:right;}
+.source-tag{font-size:calc(12px * var(--scale));color:var(--text2);margin-bottom:8px;text-align:right;}
 
 
 /* ── SETTINGS PANEL ── */
@@ -203,7 +203,7 @@ body{
   display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.5);
 }
 .settings-overlay.open{display:block;}
-.settings-title{font-size:18px;font-weight:700;margin-bottom:20px;}
+.settings-title{font-size:calc(18px * var(--scale));font-weight:700;margin-bottom:20px;}
 .scale-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
 .scale-label{font-size:15px;color:var(--text2);min-width:140px;}
 .scale-slider{flex:1;accent-color:var(--accent);}
@@ -213,6 +213,15 @@ body{
   border:none;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;
 }
 
+
+/* ── TEXT UTILITY CLASSES (scalable) ── */
+.txt-xs{font-size:calc(11px * var(--scale));}
+.txt-sm{font-size:calc(12px * var(--scale));}
+.txt-base{font-size:calc(13px * var(--scale));}
+.txt-md{font-size:calc(14px * var(--scale));}
+.txt-lg{font-size:calc(17px * var(--scale));}
+.txt-muted{color:var(--text2);}
+.txt-bold{font-weight:600;}
 </style>
 </head>
 <body>
@@ -572,7 +581,7 @@ function acard(lbl,val,unit,pct,col){
   return`<div class="aqi-card"><div class="aqi-card-label">${lbl}</div><div class="aqi-card-val">${val}</div><div class="aqi-card-unit">${unit}</div><div class="bar-wrap"><div class="bar" style="width:${Math.min(100,pct).toFixed(0)}%;background:${col};"></div></div></div>`;
 }
 function pcard(ico,lbl,val,inf){
-  return`<div class="aqi-card"><div class="aqi-card-label">${ico} ${lbl}</div><div class="aqi-card-val" style="color:${inf.c};font-size:26px;">${inf.l}</div><div class="aqi-card-unit">${Math.round(val)} gr/m³</div><div class="bar-wrap"><div class="bar" style="width:${inf.p.toFixed(0)}%;background:${inf.c};"></div></div></div>`;
+  return`<div class="aqi-card"><div class="aqi-card-label">${ico} ${lbl}</div><div class="aqi-card-val" class="txt-lg" style="color:${inf.c};">${inf.l}</div><div class="aqi-card-unit">${Math.round(val)} gr/m³</div><div class="bar-wrap"><div class="bar" style="width:${inf.p.toFixed(0)}%;background:${inf.c};"></div></div></div>`;
 }
 
 // ══ ALERTS ════════════════════════════════════════════════════
@@ -884,7 +893,7 @@ async function fetchAll(){
       return`<div class="fcard">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
           <div style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:28px;">${WE[daily.weather_code[idx]]||'☁️'}</span>
+            <span class="txt-lg">${WE[daily.weather_code[idx]]||'☁️'}</span>
             <div><div class="fcard-day">${day}</div><div class="fcard-desc">${WMO[daily.weather_code[idx]]||'—'}</div></div>
           </div>
           <div style="text-align:right;"><div class="fcard-temps">${Math.round(daily.temperature_2m_max[idx])}°</div><div class="fcard-min">/ ${Math.round(daily.temperature_2m_min[idx])}°</div></div>
@@ -999,7 +1008,7 @@ async function loadSynop(){
     const dist=Math.round(bestDist);
     $('synop-card-wrap').innerHTML=`<div class="synop-card">
       <div class="synop-header">
-        <div><div class="synop-name">📡 ${best.stacja}</div><div style="font-size:13px;color:var(--text2);">${dist} km od Ciebie</div></div>
+        <div><div class="synop-name">📡 ${best.stacja}</div><div class="txt-base txt-muted">${dist} km od Ciebie</div></div>
         <div class="synop-time">Pomiar: ${best.data_pomiaru} ${hour} UTC</div>
       </div>
       <div class="synop-grid">
@@ -1025,12 +1034,12 @@ function hydroCard(s,detail){
   if(detail){
     const sc=detail.stateCode,alarm=detail.status?.alarmValue,warn=detail.status?.warningValue,t=detail.status?.trend;
     trend=t>0?' ↑':t<0?' ↓':' →';
-    if(sc==='alarm'){col='var(--red)';badge=`<span style="font-size:11px;background:rgba(248,81,73,.15);color:var(--red);border:1px solid rgba(248,81,73,.3);border-radius:10px;padding:2px 8px;margin-left:6px;">⚠ ALARM</span>`;}
-    else if(sc==='warning'){col='var(--orange)';badge=`<span style="font-size:11px;background:rgba(219,109,40,.15);color:var(--orange);border:1px solid rgba(219,109,40,.3);border-radius:10px;padding:2px 8px;margin-left:6px;">⚠ OSTRZEŻENIE</span>`;}
+    if(sc==='alarm'){col='var(--red)';badge=`<span class="txt-xs" style="background:rgba(248,81,73,.15);color:var(--red);border:1px solid rgba(248,81,73,.3);border-radius:10px;padding:2px 8px;margin-left:6px;">⚠ ALARM</span>`;}
+    else if(sc==='warning'){col='var(--orange)';badge=`<span class="txt-xs" style="background:rgba(219,109,40,.15);color:var(--orange);border:1px solid rgba(219,109,40,.3);border-radius:10px;padding:2px 8px;margin-left:6px;">⚠ OSTRZEŻENIE</span>`;}
     else col='var(--green)';
-    if(alarm)info=`<div style="font-size:11px;color:var(--text2);margin-top:4px;">Ostrzegawczy: ${warn||'—'} cm · Alarmowy: ${alarm} cm</div>`;
+    if(alarm)info=`<div class="txt-xs txt-muted" style="margin-top:4px;">Ostrzegawczy: ${warn||'—'} cm · Alarmowy: ${alarm} cm</div>`;
   }
-  return`<div class="wcard"><div class="wcard-label">🌊 ${s.rzeka||'—'}${badge}</div><div style="font-size:13px;font-weight:600;margin-bottom:4px;">${s.stacja||'—'}</div><div style="font-size:11px;color:var(--text2);margin-bottom:6px;">${s.wojewodztwo||''}</div><div class="wcard-val" style="color:${col};">${isNaN(stan)?'—':stan}<span style="font-size:14px;color:var(--text2);"> cm${trend}</span></div>${info}<div class="wcard-sub">💧 ${temp}${lod}</div><div style="font-size:11px;color:var(--text2);">Pomiar: ${dt}</div></div>`;
+  return`<div class="wcard"><div class="wcard-label">🌊 ${s.rzeka||'—'}${badge}</div><div class="txt-base txt-bold" style="margin-bottom:4px;">${s.stacja||'—'}</div><div class="txt-xs txt-muted" style="margin-bottom:6px;">${s.wojewodztwo||''}</div><div class="wcard-val" style="color:${col};">${isNaN(stan)?'—':stan}<span class="txt-md txt-muted"> cm${trend}</span></div>${info}<div class="wcard-sub">💧 ${temp}${lod}</div><div class="txt-xs txt-muted">Pomiar: ${dt}</div></div>`;
 }
 
 async function fetchAllHydro(){if(hydroData)return hydroData;const r=await fetch('https://danepubliczne.imgw.pl/api/data/hydro');if(!r.ok)throw new Error('HTTP '+r.status);hydroData=await r.json();return hydroData;}
@@ -1130,17 +1139,17 @@ async function loadHydroGlobal(sLat,sLon,cityName){
   if(tv!=null)svg+=`<circle cx="${tx(ti).toFixed(1)}" cy="${ty(tv).toFixed(1)}" r="4" fill="${tc}" stroke="var(--bg2)" stroke-width="2"/>`;
   [0,3,7,11,13].filter(i=>i<n).forEach(i=>{const d2=new Date(times[i]);const lbl=i===ti?'dziś':(d2.getDate()+'.'+(d2.getMonth()+1));svg+=`<text x="${tx(i).toFixed(1)}" y="${H-4}" font-size="9" fill="${i===ti?tc:'var(--text2)'}" text-anchor="middle" font-weight="${i===ti?'700':'400'}">${lbl}</text>`;});
   $('hydro-global').innerHTML=`<div class="synop-card" style="margin-bottom:10px;">
-    <div class="synop-header"><div><div class="synop-name">🌊 ${cityName}</div><div style="font-size:13px;color:${tc};font-weight:600;">${trend}</div></div><div style="font-size:13px;color:${sc};font-weight:600;">${state}</div></div>
+    <div class="synop-header"><div><div class="synop-name">🌊 ${cityName}</div><div class="txt-base txt-bold" style="color:${tc};">${trend}</div></div><div class="txt-base txt-bold" style="color:${sc};">${state}</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
       <div class="wcard"><div class="wcard-label">💧 Przepływ dziś</div><div class="wcard-val" style="color:${sc};">${tv!=null?Math.round(tv)+' m³/s':'—'}</div></div>
       <div class="wcard"><div class="wcard-label">📊 Średnia 7 dni</div><div class="wcard-val">${Math.round(avg)} m³/s</div></div>
       <div class="wcard"><div class="wcard-label">⬆️ Max 14 dni</div><div class="wcard-val">${Math.round(maxV)} m³/s</div></div>
       <div class="wcard"><div class="wcard-label">📉 Min 14 dni</div><div class="wcard-val">${Math.round(minV)} m³/s</div></div>
     </div>
-    ${p25!=null&&p75!=null?`<div style="font-size:12px;color:var(--text2);margin-bottom:6px;"><span style="color:var(--green);">▬</span> Norma: ${Math.round(p25)}–${Math.round(p75)} m³/s</div>`:''}
-    <div style="font-size:11px;color:var(--text2);margin-bottom:4px;">← 7 dni | dziś | 6 dni prognozy →</div>
+    ${p25!=null&&p75!=null?`<div class="txt-sm txt-muted" style="margin-bottom:6px;"><span style="color:var(--green);">▬</span> Norma: ${Math.round(p25)}–${Math.round(p75)} m³/s</div>`:''}
+    <div class="txt-xs txt-muted" style="margin-bottom:4px;">← 7 dni | dziś | 6 dni prognozy →</div>
     <svg viewBox="0 0 ${W} ${H}" style="width:100%;max-height:120px;display:block;">${svg}</svg>
-    <div style="font-size:11px;color:var(--text2);margin-top:6px;">Copernicus GloFAS · ~5 km</div>
+    <div class="txt-xs txt-muted" style="margin-top:6px;">Copernicus GloFAS · ~5 km</div>
   </div>`;
   $('hydro-global').style.display='block';
 }
