@@ -19,23 +19,23 @@
 /* ── THEMES ── */
 :root,[data-theme="dark"]{--scale:1;
   --bg:#0d1117;--bg2:#161b22;--bg3:#21262d;
-  --text:#e6edf3;--text2:#7d8590;--text3:#484f58;
+  --text:#e6edf3;--text2:#7d8590;--text3:#7d8590;
   --accent:#58a6ff;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;
   --border:#30363d;--radius:12px;
 }
 [data-theme="light"]{
   --bg:#f6f8fa;--bg2:#ffffff;--bg3:#eaeef2;
-  --text:#1f2328;--text2:#656d76;--text3:#afb8c1;
+  --text:#1f2328;--text2:#656d76;--text3:#656d76;
   --accent:#0969da;--green:#1a7f37;--yellow:#9a6700;--red:#cf222e;--orange:#bc4c00;
   --border:#d0d7de;--radius:12px;
 }
-[data-theme="mint"]{--bg:#0a1f1a;--bg2:#112820;--bg3:#1a3a2e;--text:#d4f0e8;--text2:#5a9e8a;--text3:#2d6b56;--accent:#2fb892;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#1e4a3a;--radius:12px;}
-[data-theme="sky"]{--bg:#0d1829;--bg2:#112038;--bg3:#162a4a;--text:#cce4ff;--text2:#4a88cc;--text3:#235588;--accent:#4ca8ff;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#1a3a6a;--radius:12px;}
-[data-theme="sun"]{--bg:#1a1400;--bg2:#241c00;--bg3:#332800;--text:#ffe4a0;--text2:#aa8800;--text3:#665500;--accent:#ffcc00;--green:#3fb950;--yellow:#ffcc00;--red:#f85149;--orange:#db6d28;--border:#443300;--radius:12px;}
-[data-theme="rose"]{--bg:#1a0d12;--bg2:#24121a;--bg3:#331826;--text:#ffd4e0;--text2:#cc5577;--text3:#882244;--accent:#ff6688;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#441828;--radius:12px;}
-[data-theme="lavender"]{--bg:#110d1a;--bg2:#181224;--bg3:#221833;--text:#e0d4ff;--text2:#9977cc;--text3:#664499;--accent:#aa88ff;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#332244;--radius:12px;}
-[data-theme="peach"]{--bg:#1a1008;--bg2:#241810;--bg3:#33231a;--text:#ffe0c8;--text2:#cc7744;--text3:#884422;--accent:#ff8844;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#442211;--radius:12px;}
-[data-theme="red"]{--bg:#1a0808;--bg2:#240e0e;--bg3:#331818;--text:#ffd4d4;--text2:#cc4444;--text3:#882222;--accent:#ff6666;--green:#3fb950;--yellow:#d29922;--red:#ff6666;--orange:#db6d28;--border:#441111;--radius:12px;}
+[data-theme="mint"]{--bg:#0a1f1a;--bg2:#112820;--bg3:#1a3a2e;--text:#d4f0e8;--text2:#5a9e8a;--text3:#5a9e8a;--accent:#2fb892;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#1e4a3a;--radius:12px;}
+[data-theme="sky"]{--bg:#0d1829;--bg2:#112038;--bg3:#162a4a;--text:#cce4ff;--text2:#4a88cc;--text3:#4a88cc;--accent:#4ca8ff;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#1a3a6a;--radius:12px;}
+[data-theme="sun"]{--bg:#1a1400;--bg2:#241c00;--bg3:#332800;--text:#ffe4a0;--text2:#aa8800;--text3:#aa8800;--accent:#ffcc00;--green:#3fb950;--yellow:#ffcc00;--red:#f85149;--orange:#db6d28;--border:#443300;--radius:12px;}
+[data-theme="rose"]{--bg:#1a0d12;--bg2:#24121a;--bg3:#331826;--text:#ffd4e0;--text2:#cc5577;--text3:#cc5577;--accent:#ff6688;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#441828;--radius:12px;}
+[data-theme="lavender"]{--bg:#110d1a;--bg2:#181224;--bg3:#221833;--text:#e0d4ff;--text2:#9977cc;--text3:#9977cc;--accent:#aa88ff;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#332244;--radius:12px;}
+[data-theme="peach"]{--bg:#1a1008;--bg2:#241810;--bg3:#33231a;--text:#ffe0c8;--text2:#cc7744;--text3:#cc7744;--accent:#ff8844;--green:#3fb950;--yellow:#d29922;--red:#f85149;--orange:#db6d28;--border:#442211;--radius:12px;}
+[data-theme="red"]{--bg:#1a0808;--bg2:#240e0e;--bg3:#331818;--text:#ffd4d4;--text2:#cc4444;--text3:#cc4444;--accent:#ff6666;--green:#3fb950;--yellow:#d29922;--red:#ff6666;--orange:#db6d28;--border:#441111;--radius:12px;}
 
 /* ── BASE ── */
 html{height:100%;width:100%;overflow-x:hidden;}
@@ -251,7 +251,7 @@ body{
   </div>
   <div class="search-row">
     <input class="search-input" id="city-input" type="text" placeholder="Miasto, dzielnica..." value="Warszawa">
-    <button class="btn btn-search" id="search-btn" onclick="searchCity()">Szukaj</button>
+    <button class="btn btn-search" id="search-btn" onclick="searchCity()" title="Szukaj lokalizacji">Szukaj</button>
     <button class="btn" onclick="useMyLocation()" title="Moja lokalizacja">📍</button>
     <button class="btn" onclick="saveLocation()" title="Zapisz">🔖</button>
     <button class="btn" onclick="openSettings()" title="Ustawienia">⚙️</button>
@@ -330,7 +330,7 @@ body{
 <p id="hydro-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Aktualne stany wód — IMGW dla Polski, Copernicus GloFAS dla świata.</p>
 <div class="hydro-controls" id="hydro-controls" style="display:none;">
   <input class="hydro-input" id="hydro-input" type="text" placeholder="Rzeka, województwo...">
-  <button class="btn btn-search" id="hydro-search-btn" onclick="searchHydro()">Szukaj</button>
+  <button class="btn btn-search" id="hydro-search-btn" onclick="searchHydro()" title="Szukaj rzeki">Szukaj</button>
   <button class="btn" onclick="loadNearestHydro()" title="Najbliższe">📍</button>
   <span id="hydro-loading" style="display:none;font-size:13px;color:var(--text2);align-self:center;"><span class="spin"></span></span>
 </div>
@@ -401,7 +401,7 @@ body{
       <input type="checkbox" id="al-aqi" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 😷 Smog AQI>100
     </label>
   </div>
-  <button class="settings-close" onclick="closeSettings()">Zamknij</button>
+  <button class="settings-close" onclick="closeSettings()" title="Zamknij ustawienia">Zamknij</button>
 </div>
 
 <div class="footer">
