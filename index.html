@@ -258,12 +258,16 @@ body{
 <p id="weather-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Dane na żywo z modelu Open-Meteo, aktualizowane co 10 minut.</p>
 <div class="weather-grid" id="weather-grid" style="display:none;"></div>
 
+<hr class="divider" id="div0a" style="display:none;">
+
 <!-- HOURLY CHART -->
 <div class="stitle" id="hourly-title" style="display:none;">Prognoza godzinowa — 24h</div>
 <p id="hourly-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Temperatura, opady i prawdopodobieństwo deszczu na najbliższą dobę.</p>
 <div class="chart-box" id="hourly-box" style="display:none;">
   <svg id="hourly-svg" viewBox="0 0 700 180" style="width:100%;max-height:220px;display:block;margin:0;"></svg>
 </div>
+
+<hr class="divider" id="div0b" style="display:none;">
 
 <!-- FORECAST -->
 <div class="stitle" id="forecast-title" style="display:none;">Prognoza 4-dniowa</div>
@@ -885,6 +889,7 @@ async function fetchAll(){
     $('weather-grid').style.display='grid';
     $('weather-title').style.display='block';
   $('weather-desc').style.display='block';
+  $('div0a').style.display='block';
 
     if(hourly)renderHourly(hourly);
 
@@ -914,6 +919,7 @@ async function fetchAll(){
     $('forecast-list').style.display='grid';
     $('forecast-title').style.display='block';
   $('forecast-desc').style.display='block';
+  $('div0b').style.display='block';
     $('div1').style.display='block';
 
     // AQI
