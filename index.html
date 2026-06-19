@@ -257,6 +257,9 @@ body{
 <div class="stitle" id="weather-title" style="display:none;">Aktualna pogoda</div>
 <p id="weather-desc" style="display:none;font-size:calc(13px * var(--scale));color:var(--text2);margin-bottom:10px;">Dane na żywo z modelu Open-Meteo, aktualizowane co 10 minut.</p>
 <div class="weather-grid" id="weather-grid" style="display:none;"></div>
+<p id="uv-legend" style="display:none;font-size:calc(15px * var(--scale));color:var(--text2);margin-top:8px;line-height:1.5;">
+  ☀️ Skala UV: 0-2 niski · 3-5 umiarkowany · 6-7 wysoki · 8-10 b. wysoki · 11+ ekstremalny
+</p>
 
 <hr class="divider" id="div0a" style="display:none;">
 
@@ -566,7 +569,7 @@ function windDesc(kmh){
   if(kmh<75)return'Sztorm';
   return'Gwałtowny sztorm';
 }
-function uvL(u){if(u<=2)return'niski';if(u<=5)return'umiark.';if(u<=7)return'wysoki';if(u<=10)return'b.wysoki';return'ekstr.';}
+function uvL(u){if(u<=2)return'niski';if(u<=5)return'umiarkowany';if(u<=7)return'wysoki';if(u<=10)return'b. wysoki';return'ekstremalny';}
 function moon(){
   const d=new Date(),a=(14-d.getMonth()-1)/12|0,y=d.getFullYear()+4800-a,m=d.getMonth()+1+12*a-3;
   const jdn=d.getDate()+(153*m+2)/5|0+365*y+(y/4|0)-(y/100|0)+(y/400|0)-32045;
@@ -897,11 +900,12 @@ async function fetchAll(){
       wcard('💧','Wilgotność',Math.round(cur.relative_humidity_2m)+'%',`Punkt rosy ${dp}°C`)+
       wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`${windDesc(cur.wind_speed_10m)} · Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
       wcard('📊','Ciśnienie',Math.round(cur.surface_pressure||1013)+' hPa',`Widoczność ${vis}`)+
-      wcard('☀️','UV / Księżyc',uvL(uv),`${m.e} ${m.n} (${m.ill}%)<br>🌅 ${sr} · 🌇 ${ss}`);
+      wcard('☀️','UV / Księżyc',`UV ${uv} · ${uvL(uv)}`,`${m.e} ${m.n} (${m.ill}%)<br>🌅 ${sr} · 🌇 ${ss}`);
 
     $('weather-grid').style.display='grid';
     $('weather-title').style.display='block';
   $('weather-desc').style.display='block';
+  $('uv-legend').style.display='block';
   $('div0a').style.display='block';
 
     if(hourly)renderHourly(hourly);
@@ -924,7 +928,7 @@ async function fetchAll(){
         </div>
         <div class="fcard-details">
           <span>${prec>0?`🌧 ${prec.toFixed(1)} mm (${prob||0}%)`:'☀️ Bez opadów'}</span>
-          <span>💨 ${Math.round(daily.wind_speed_10m_max[idx])} km/h · ☀️ UV ${Math.round(uvM||0)}</span>
+          <span>💨 ${Math.round(daily.wind_speed_10m_max[idx])} km/h · ☀️ UV ${Math.round(uvM||0)} (${uvL(uvM||0)})</span>
           <span>🌅 ${sr2} · 🌇 ${ss2}</span>
         </div>
       </div>`;
