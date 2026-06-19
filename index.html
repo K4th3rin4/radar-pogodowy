@@ -826,7 +826,7 @@ async function fetchAll(){
 
     $('weather-grid').innerHTML=
       wcard(WE[wc]||'☁️','Zjawisko',WMO[wc]||'—',`Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`)+
-      wcard('🌡','Temperatura',Math.round(cur.temperature_2m)+'°C',`Odczuwalna ${Math.round(cur.apparent_temperature)}°C`)+
+      wcard('🌡','Temperatura',Math.round(cur.temperature_2m)+'°C',`Odczuwalna ${Math.round(cur.apparent_temperature)}°C · Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`)+
       wcard('💧','Wilgotność',Math.round(cur.relative_humidity_2m)+'%',`Punkt rosy ${dp}°C`)+
       wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
       wcard('📊','Ciśnienie',Math.round(cur.surface_pressure||1013)+' hPa',`Widoczność ${vis}`)+
