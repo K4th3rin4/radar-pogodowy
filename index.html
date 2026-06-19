@@ -109,10 +109,7 @@ body{
 .wcard.wide{grid-column:1/-1;}
 
 /* ── HOURLY CHART ── */
-.chart-box{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:var(--radius);padding:17px 0 12px 0;margin-bottom:12px;
-}
+.chart-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 0 10px 0;margin-bottom:0;}
 
 /* ── FORECAST ── */
 .forecast-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:0;}
@@ -261,8 +258,8 @@ body{
 <div class="weather-grid" id="weather-grid" style="display:none;"></div>
 
 <!-- HOURLY CHART -->
+<div class="stitle" id="hourly-title" style="display:none;">Prognoza godzinowa — 24h</div>
 <div class="chart-box" id="hourly-box" style="display:none;">
-  <div class="stitle" style="margin-bottom:8px;padding:0 14px;">Prognoza godzinowa — 24h</div>
   <svg id="hourly-svg" viewBox="0 0 700 180" style="width:100%;max-height:220px;display:block;margin:0;"></svg>
 </div>
 
@@ -815,6 +812,7 @@ function renderHourly(hourly){
   labels.forEach((l,i)=>{if(i%3!==0)return;const x=tx(i);s+=`<text x="${x.toFixed(1)}" y="${H-4}" font-size="9" fill="${tc}" text-anchor="middle">${l}</text><circle cx="${x.toFixed(1)}" cy="${ty(temps[i]).toFixed(1)}" r="3" fill="var(--accent)"/><text x="${x.toFixed(1)}" y="${(ty(temps[i])-6).toFixed(1)}" font-size="9" fill="${tc}" text-anchor="middle">${temps[i]}°</text>`;});
   $('hourly-svg').innerHTML=s;
   $('hourly-box').style.display='block';
+  $('hourly-title').style.display='block';
 }
 
 // ══ SHOW/HIDE SECTIONS ════════════════════════════════════════
