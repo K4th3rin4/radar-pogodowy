@@ -576,6 +576,33 @@ function pcard(ico,lbl,val,inf){
 }
 
 // ══ ALERTS ════════════════════════════════════════════════════
+async 
+// Podsumowanie zmian pogody w ciągu dnia (na podstawie hourly)
+function summarizeTodayWeather(hourly, currentCode){
+  if(!hourly?.time?.length) return null;
+  const now = new Date();
+  const todayEnd = new Date(now); todayEnd.setHours(23,59,59,999);
+  const seen = new Set([currentCode]);
+  const changes = [];
+
+  for(let i=0;i<hourly.time.length;i++){
+    const t = new Date(hourly.time[i]);
+    if(t <= now) continue;
+    if(t > todayEnd) break;
+    const wc = hourly.weather_code?.[i];
+    if(wc==null) continue;
+    // Group codes into "significant" categories to avoid noise (e.g. 1 vs 2 vs 3 = cloud cover, skip minor changes)
+    const significant = wc>=51; // mżawka i poważniejsze - pomijamy drobne zmiany zachmurzenia
+    if(significant && !seen.has(wc)){
+      seen.add(wc);
+      const hh = t.getHours().toString().padStart(2,'0')+':00';
+      changes.push({code:wc, time:hh, icon:WE[wc]||'☁️', name:WMO[wc]||'—'});
+      if(changes.length>=2) break; // max 2 dodatkowe zjawiska
+    }
+  }
+  return changes;
+}
+
 async function renderAlerts(cur, daily, eAqi, hourly){
   const a = [];
 
@@ -825,7 +852,16 @@ async function fetchAll(){
     const ss=new Date(daily.sunset[0]).toLocaleTimeString('pl-PL',{hour:'2-digit',minute:'2-digit'});
 
     $('weather-grid').innerHTML=
-      wcard(WE[wc]||'☁️','Zjawisko',WMO[wc]||'—',`Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`)+
+      (()=>{
+        const changes = summarizeTodayWeather(hourly, wc);
+        let sub = '';
+        if(changes && changes.length){
+          sub = changes.map(ch=>`Później: ${ch.icon} ${ch.name} (${ch.time})`).join(' · ');
+        } else {
+          sub = `Bez większych zmian do wieczora`;
+        }
+        return wcard(WE[wc]||'☁️','Zjawisko',WMO[wc]||'—',sub);
+      })()+
       wcard('🌡','Temperatura',Math.round(cur.temperature_2m)+'°C',`Odczuwalna ${Math.round(cur.apparent_temperature)}°C · Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`)+
       wcard('💧','Wilgotność',Math.round(cur.relative_humidity_2m)+'%',`Punkt rosy ${dp}°C`)+
       wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
