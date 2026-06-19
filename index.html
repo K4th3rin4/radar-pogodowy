@@ -221,11 +221,16 @@ body{
 .txt-bold{font-weight:600;}
 
 /* ── QUICK NAV ── */
-.quicknav-wrap{margin-bottom:14px;}
+.quicknav-wrap{margin-bottom:14px;position:relative;}
+.quicknav-wrap::after{
+  content:'';position:absolute;top:0;right:0;bottom:2px;width:32px;
+  background:linear-gradient(to right, transparent, var(--bg) 85%);
+  pointer-events:none;
+}
 .quicknav{
   display:flex;gap:8px;overflow-x:auto;
   -webkit-overflow-scrolling:touch;scrollbar-width:none;
-  padding-bottom:2px;
+  padding-bottom:2px;padding-right:20px;
 }
 .quicknav::-webkit-scrollbar{display:none;}
 .quicknav-item{
