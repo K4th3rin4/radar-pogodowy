@@ -553,6 +553,19 @@ function maybeNotify(cur){
 
 // ══ HELPERS ═══════════════════════════════════════════════════
 function wdir(d){return WD[Math.round((d||0)/45)%8];}
+function windDesc(kmh){
+  // Skala Beauforta (uproszczona, opisowa)
+  if(kmh<1)return'Cisza';
+  if(kmh<6)return'Powiew';
+  if(kmh<12)return'Słaby wiatr';
+  if(kmh<20)return'Łagodny wiatr';
+  if(kmh<29)return'Umiarkowany';
+  if(kmh<39)return'Dość silny';
+  if(kmh<50)return'Silny wiatr';
+  if(kmh<62)return'Bardzo silny';
+  if(kmh<75)return'Sztorm';
+  return'Gwałtowny sztorm';
+}
 function uvL(u){if(u<=2)return'niski';if(u<=5)return'umiark.';if(u<=7)return'wysoki';if(u<=10)return'b.wysoki';return'ekstr.';}
 function moon(){
   const d=new Date(),a=(14-d.getMonth()-1)/12|0,y=d.getFullYear()+4800-a,m=d.getMonth()+1+12*a-3;
@@ -882,9 +895,9 @@ async function fetchAll(){
       })()+
       wcard('🌡','Temperatura',Math.round(cur.temperature_2m)+'°C',`Odczuwalna ${Math.round(cur.apparent_temperature)}°C · Maks. ${Math.round(daily.temperature_2m_max[0])}° / Min. ${Math.round(daily.temperature_2m_min[0])}°`)+
       wcard('💧','Wilgotność',Math.round(cur.relative_humidity_2m)+'%',`Punkt rosy ${dp}°C`)+
-      wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
+      wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`${windDesc(cur.wind_speed_10m)} · Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
       wcard('📊','Ciśnienie',Math.round(cur.surface_pressure||1013)+' hPa',`Widoczność ${vis}`)+
-      wcard('☀️','UV / Księżyc',uvL(uv),`${m.e} ${m.n} · ${m.ill}% · 🌅${sr} 🌇${ss}`);
+      wcard('☀️','UV / Księżyc',uvL(uv),`${m.e} ${m.n} (${m.ill}%)<br>🌅 ${sr} · 🌇 ${ss}`);
 
     $('weather-grid').style.display='grid';
     $('weather-title').style.display='block';
