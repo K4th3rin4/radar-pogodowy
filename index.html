@@ -900,7 +900,7 @@ async function fetchAll(){
       wcard('💧','Wilgotność',Math.round(cur.relative_humidity_2m)+'%',`Punkt rosy ${dp}°C`)+
       wcard('💨','Wiatr',Math.round(cur.wind_speed_10m)+' km/h',`${windDesc(cur.wind_speed_10m)} · Porywy ${Math.round(cur.wind_gusts_10m)} km/h · ${wdir(cur.wind_direction_10m)}`)+
       wcard('📊','Ciśnienie',Math.round(cur.surface_pressure||1013)+' hPa',`Widoczność ${vis}`)+
-      wcard('☀️','UV / Księżyc',`UV ${uv} · ${uvL(uv)}`,`${m.e} ${m.n} (${m.ill}%)<br>🌅 ${sr} · 🌇 ${ss}`);
+      wcard('☀️','UV / Księżyc',`UV ${uv}`,`${m.e} ${m.n} (${m.ill}%)<br>🌅 ${sr} · 🌇 ${ss}`);
 
     $('weather-grid').style.display='grid';
     $('weather-title').style.display='block';
@@ -928,7 +928,7 @@ async function fetchAll(){
         </div>
         <div class="fcard-details">
           <span>${prec>0?`🌧 ${prec.toFixed(1)} mm (${prob||0}%)`:'☀️ Bez opadów'}</span>
-          <span>💨 ${Math.round(daily.wind_speed_10m_max[idx])} km/h · ☀️ UV ${Math.round(uvM||0)} (${uvL(uvM||0)})</span>
+          <span>💨 ${Math.round(daily.wind_speed_10m_max[idx])} km/h · ☀️ UV ${Math.round(uvM||0)}</span>
           <span>🌅 ${sr2} · 🌇 ${ss2}</span>
         </div>
       </div>`;
