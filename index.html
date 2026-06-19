@@ -101,7 +101,7 @@ body{
 .divider{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
 
 /* ── WEATHER CARDS ── */
-.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.weather-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:0;}
 .wcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 14px;display:flex;flex-direction:column;}
 .wcard-label{font-size:calc(16px * var(--scale));color:var(--text2);margin-bottom:6px;display:flex;align-items:center;gap:5px;font-weight:500;}
 .wcard-val{font-size:calc(34px * var(--scale));font-weight:700;line-height:1.1;margin-bottom:4px;}
@@ -145,10 +145,10 @@ body{
 .bar{height:100%;border-radius:2px;}
 
 /* ── POLLEN ── */
-.pollen-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;}
+.pollen-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;margin-bottom:0;}
 
 /* ── RADAR ── */
-.radar-box{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);}
+.radar-box{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);margin-bottom:0;}
 .radar-box iframe{display:block;width:100%;height:680px;border:none;}
 .radar-ext{
   position:absolute;top:10px;right:10px;
@@ -163,7 +163,7 @@ body{
   background:var(--bg2);border:1px solid var(--border);
   color:var(--text);border-radius:var(--radius);font-size:calc(18px * var(--scale));outline:none;
 }
-.hydro-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.hydro-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;;margin-bottom:0}
 
 /* ── SYNOP ── */
 .synop-card{
