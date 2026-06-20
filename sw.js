@@ -2,7 +2,7 @@
 // Strategia: network-first dla wszystkiego
 // Cache tylko jako fallback gdy offline
 
-const CACHE = 'radar-v26';
+const CACHE = 'radar-v27';
 
 self.addEventListener('install', e => {
   self.skipWaiting(); // Aktywuj od razu bez czekania
