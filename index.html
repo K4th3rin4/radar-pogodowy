@@ -412,12 +412,6 @@ body{
 </div><!-- /page -->
 
 <script>
-window.addEventListener('error', function(e){
-  document.body.insertAdjacentHTML('afterbegin',
-    '<div style="background:#f85149;color:#fff;padding:16px;font-size:14px;font-family:monospace;white-space:pre-wrap;word-break:break-word;position:relative;z-index:9999;">BŁĄD JS:\n'+e.message+'\n\nPlik: '+e.filename+'\nLinia: '+e.lineno+':'+e.colno+'</div>'
-  );
-});
-
 // ══ DATA ══════════════════════════════════════════════════════
 const WMO={0:'Bezchmurnie',1:'Przeważnie czyste',2:'Częściowo zachmurzenie',3:'Zachmurzenie',45:'Mgła',48:'Szadź',51:'Mżawka lekka',53:'Mżawka',55:'Mżawka gęsta',61:'Deszcz lekki',63:'Deszcz',65:'Deszcz ulewny',71:'Śnieg lekki',73:'Śnieg',75:'Śnieg intensywny',77:'Grad',80:'Przelotny deszcz',81:'Przelotne deszcze',82:'Ulewa',85:'Przelotny śnieg',86:'Intensywny śnieg',95:'Burza',96:'Burza z gradem',99:'Burza z dużym gradem'};
 const WE={0:'☀️',1:'🌤',2:'⛅',3:'☁️',45:'🌫',48:'🌫',51:'🌦',53:'🌦',55:'🌧',61:'🌦',63:'🌧',65:'🌧',71:'❄️',73:'❄️',75:'❄️',77:'🌨',80:'🌦',81:'🌧',82:'⛈',85:'❄️',86:'❄️',95:'⛈',96:'⛈',99:'⛈'};
@@ -671,7 +665,6 @@ function pcard(ico,lbl,val,inf){
 }
 
 // ══ ALERTS ════════════════════════════════════════════════════
-async 
 // Podsumowanie zmian pogody w ciągu dnia (na podstawie hourly)
 function summarizeTodayWeather(hourly, currentCode){
   if(!hourly?.time?.length) return null;
