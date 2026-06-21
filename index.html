@@ -200,14 +200,13 @@ body{
   display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.5);
 }
 .settings-overlay
-.settings-title{font-size:calc(22px * var(--scale));font-weight:700;margin-bottom:20px;}
+.settings-title{font-size:26px;font-weight:700;margin-bottom:20px;}
 .scale-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-.scale-label{font-size:20px;color:var(--text2);min-width:140px;}
+.scale-label{font-size:22px;color:var(--text2);min-width:140px;}
 .scale-slider{flex:1;accent-color:var(--accent);}
-.scale-val{font-size:20px;font-weight:600;min-width:36px;text-align:right;}
-.settings-close{
-  width:100%;padding:14px;background:var(--accent);color:#fff;
-  border:none;border-radius:var(--radius);font-size:20px;font-weight:700;cursor:pointer;
+.scale-val{font-size:22px;font-weight:600;min-width:36px;text-align:right;}
+.settings-close{padding:18px;background:var(--accent);color:#fff;
+  border:none;border-radius:var(--radius);font-size:22px;font-weight:700;cursor:pointer;
 }
 
 
@@ -355,50 +354,50 @@ body{
       oninput="applyScale(this.value)">
     <span class="scale-val" id="scale-val">100%</span>
   </div>
-  <div style="font-size:13px;color:var(--text2);margin-bottom:20px;">
+  <div style="font-size:18px;color:var(--text2);margin-bottom:20px;">
     Dostosuj wielkość tekstu do swojego ekranu
   </div>
 
   <div style="height:1px;background:var(--border);margin-bottom:18px;"></div>
-  <div style="font-size:16px;font-weight:700;margin-bottom:14px;">🔔 Powiadomienia pogodowe</div>
+  <div style="font-size:21px;font-weight:700;margin-bottom:14px;">🔔 Powiadomienia pogodowe</div>
 
   <div style="margin-bottom:14px;">
-    <div style="font-size:15px;font-weight:600;margin-bottom:10px;color:var(--text2);">Ostrzegaj przed zjawiskiem:</div>
+    <div style="font-size:19px;font-weight:600;margin-bottom:10px;color:var(--text2);">Ostrzegaj przed zjawiskiem:</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-        <input type="checkbox" id="lead-30" onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 30 min wcześniej
+      <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-30" onchange="saveNotifLeads()" style="width:22px;height:22px;accent-color:var(--accent);"> 30 min wcześniej
       </label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-        <input type="checkbox" id="lead-60" checked onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 1 godz. wcześniej
+      <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-60" checked onchange="saveNotifLeads()" style="width:22px;height:22px;accent-color:var(--accent);"> 1 godz. wcześniej
       </label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-        <input type="checkbox" id="lead-120" onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 2 godz. wcześniej
+      <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-120" onchange="saveNotifLeads()" style="width:22px;height:22px;accent-color:var(--accent);"> 2 godz. wcześniej
       </label>
-      <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-        <input type="checkbox" id="lead-180" onchange="saveNotifLeads()" style="width:18px;height:18px;accent-color:var(--accent);"> 3 godz. wcześniej
+      <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+        <input type="checkbox" id="lead-180" onchange="saveNotifLeads()" style="width:22px;height:22px;accent-color:var(--accent);"> 3 godz. wcześniej
       </label>
     </div>
   </div>
 
-  <div style="font-size:13px;font-weight:600;margin-bottom:10px;color:var(--text2);">Alerty dla:</div>
+  <div style="font-size:19px;font-weight:600;margin-bottom:10px;color:var(--text2);">Alerty dla:</div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-      <input type="checkbox" id="al-storm" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> ⛈ Burza
+    <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-storm" checked onchange="saveAlertPref()" style="width:22px;height:22px;accent-color:var(--accent);"> ⛈ Burza
     </label>
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-      <input type="checkbox" id="al-rain" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 🌧 Ulewa
+    <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-rain" checked onchange="saveAlertPref()" style="width:22px;height:22px;accent-color:var(--accent);"> 🌧 Ulewa
     </label>
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-      <input type="checkbox" id="al-wind" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 💨 Silny wiatr
+    <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-wind" checked onchange="saveAlertPref()" style="width:22px;height:22px;accent-color:var(--accent);"> 💨 Silny wiatr
     </label>
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-      <input type="checkbox" id="al-heat" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 🌡 Upał >33°C
+    <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-heat" checked onchange="saveAlertPref()" style="width:22px;height:22px;accent-color:var(--accent);"> 🌡 Upał >33°C
     </label>
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-      <input type="checkbox" id="al-frost" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> ❄️ Mróz <-10°C
+    <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-frost" checked onchange="saveAlertPref()" style="width:22px;height:22px;accent-color:var(--accent);"> ❄️ Mróz <-10°C
     </label>
-    <label style="display:flex;align-items:center;gap:8px;font-size:14px;padding:10px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
-      <input type="checkbox" id="al-aqi" checked onchange="saveAlertPref()" style="width:18px;height:18px;accent-color:var(--accent);"> 😷 Smog AQI>100
+    <label style="display:flex;align-items:center;gap:8px;font-size:19px;padding:12px;background:var(--bg3);border-radius:var(--radius);cursor:pointer;">
+      <input type="checkbox" id="al-aqi" checked onchange="saveAlertPref()" style="width:22px;height:22px;accent-color:var(--accent);"> 😷 Smog AQI>100
     </label>
   </div>
   <button class="settings-close" onclick="closeSettings()" title="Zamknij ustawienia">Zamknij</button>
