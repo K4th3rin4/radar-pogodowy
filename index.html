@@ -548,7 +548,7 @@ function cycleTheme(){applyTheme(THEMES[(themeIdx+1)%THEMES.length].id);}
   // Restore theme
   const t=localStorage.getItem('wx_theme')||'dark';applyTheme(t);
   // Restore notifications state
-  if(localStorage.getItem('wx_notif')==='1'&&Notification.permission==='granted'){
+  if(typeof Notification!=='undefined'&&localStorage.getItem('wx_notif')==='1'&&Notification.permission==='granted'){
     notifOn=true;
     const nb=$('notif-btn');if(nb)nb.textContent='🔔';
   }
@@ -578,7 +578,7 @@ async function toggleNotif(){
 
 // ── NOTIFICATION HELPER (Android PWA requires Service Worker) ──
 function showNotif(title, options){
-  if(Notification.permission !== 'granted') return;
+  if(typeof Notification==='undefined'||Notification.permission !== 'granted') return;
   if('serviceWorker' in navigator && navigator.serviceWorker.ready){
     navigator.serviceWorker.ready.then(reg => {
       reg.showNotification(title, options);
@@ -591,7 +591,7 @@ function showNotif(title, options){
 }
 
 function maybeNotify(cur){
-  if(!notifOn||Notification.permission!=='granted') return;
+  if(typeof Notification==='undefined'||!notifOn||Notification.permission!=='granted') return;
   const alerts=[];
   if(cur.weather_code>=95) alerts.push('⛈ Burza!');
   if(cur.wind_speed_10m>50) alerts.push('💨 Silny wiatr '+Math.round(cur.wind_speed_10m)+' km/h');
@@ -809,7 +809,7 @@ async function renderAlerts(cur, daily, eAqi, hourly){
 }
 
 function maybeNotifyUpcoming(upcoming, hourly, now, notifLeads){
-  if(!notifOn || Notification.permission!=='granted') return;
+  if(typeof Notification==='undefined'||!notifOn || Notification.permission!=='granted') return;
   const lastNotif = parseInt(localStorage.getItem('wx_last_notif')||'0');
   if(Date.now() - lastNotif < 25*60*1000) return; // max 1 notif per 25min
 
